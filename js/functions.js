@@ -8,20 +8,21 @@ const videoList = [
 const videoPath = "vid/";
 
 // Fonction qui lit une vidéo
-function playVideo() {
+function playVideo(index) {
     const videoElement = document.getElementById("video-player");
     videoElement.style.display = "block"; // Afficher la vidéo lorsque le bouton "Play" est cliqué
-    videoElement.src = videoPath + videoList[0];
+    videoElement.src = videoPath + videoList[index];
     videoElement.play();
 }
 
 // Fonction qui passe à la vidéo suivante
 function nextVideo() {
     const videoElement = document.getElementById("video-player");
+    console.log(videoElement.src);
     const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, ""));
-    console.log((currentVideoIndex+1)% videoList.length);
+    console.log(videoList.indexOf(videoElement.src.replace(videoPath, "")));
+    console.log(currentVideoIndex);
     const nextVideoIndex = (currentVideoIndex + 1) % videoList.length;
     videoElement.style.display = "none";
     playVideo(nextVideoIndex);
-    videoElement.style.display = "block";
 }
