@@ -1,11 +1,10 @@
+// Variable de chemin commun
+import { videoPath } from './config.js';
 // Création d'une liste de vidéos
 const videoList = [
     "0.mkv",
     "1.mkv",
 ];
-
-// Variable de chemin commun
-const videoPath = "vid/";
 
 // Fonction qui lit une vidéo
 function playVideo(index) {
