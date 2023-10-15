@@ -1,5 +1,7 @@
 // Variable de chemin commun
-import { videoPath } from './config.js';
+// import { videoPath } from './config.js';
+const videoPath = "https://saes-vin.iiens.net/vid/";
+
 // Création d'une liste de vidéos
 const videoList = [
     "0.mkv",
