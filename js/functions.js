@@ -37,6 +37,10 @@ function beginBT() {
     const submitButton = document.getElementById("submitButton");
     submitButton.style.display = "block";
 
+    // Afficher le bouton "Next"
+    const nextButton = document.getElementById("nextButton");
+    nextButton.style.display = "block";
+
     //à termes il faudra que l'on encapsule nos fonctions pour ne plus avoir à toucher ici
 }
 
