@@ -6,12 +6,14 @@ const videoPath = "https://saes-vin.iiens.net/vid/";
 const videoList = [
     "0.mkv",
     "1.mkv",
+    "2.mkv",
 ];
 
 // Création d'une liste de noms associés aux vidéos
 const nameList = [
-    "Gyakkou",
+    "Lain",
     "Usseewa",
+    "One Piece",
 ];
 
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
