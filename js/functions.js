@@ -17,17 +17,6 @@ function beginBT() {
     console.log(videoElement.src)
 }
 
-// Fonction qui passe à la vidéo suivante
-// function nextVideo() {
-//     const videoElement = document.getElementById("video-player");
-//     console.log(videoElement.src);
-//     const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, ""));
-//     console.log(videoList.indexOf(videoElement.src.replace(videoPath, "")));
-//     console.log(currentVideoIndex);
-//     const nextVideoIndex = (currentVideoIndex + 1) % videoList.length;
-//     videoElement.style.display = "none";
-//     playVideo(nextVideoIndex);
-// }
 
 function nextVideo() {
     const videoElement = document.getElementById("video-player");
@@ -35,7 +24,7 @@ function nextVideo() {
     console.log(currentVideoIndex)
     const nextVideoIndex = (currentVideoIndex + 1) % videoList.length;
     console.log(nextVideoIndex)
-    videoElement.style.display = "none";
+    videoElement.style.display = "block";
     videoElement.src = videoPath + videoList[nextVideoIndex];
     console.log(videoElement.src)
     videoElement.play();
