@@ -8,22 +8,35 @@ const videoList = [
     "1.mkv",
 ];
 
-// Fonction qui lit une vidéo
-function playVideo(index) {
+// Fonction qui démarre la première vidéo et cache l'élément vidéo
+function beginBT() {
     const videoElement = document.getElementById("video-player");
-    videoElement.style.display = "block"; // Afficher la vidéo lorsque le bouton "Play" est cliqué
-    videoElement.src = videoPath + videoList[index];
+    videoElement.src = videoPath + videoList[0];
+    videoElement.style.display = "block"; // Affiche l'élément vidéo
     videoElement.play();
+    console.log(videoElement.src)
 }
 
 // Fonction qui passe à la vidéo suivante
+// function nextVideo() {
+//     const videoElement = document.getElementById("video-player");
+//     console.log(videoElement.src);
+//     const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, ""));
+//     console.log(videoList.indexOf(videoElement.src.replace(videoPath, "")));
+//     console.log(currentVideoIndex);
+//     const nextVideoIndex = (currentVideoIndex + 1) % videoList.length;
+//     videoElement.style.display = "none";
+//     playVideo(nextVideoIndex);
+// }
+
 function nextVideo() {
     const videoElement = document.getElementById("video-player");
-    console.log(videoElement.src);
     const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, ""));
-    console.log(videoList.indexOf(videoElement.src.replace(videoPath, "")));
-    console.log(currentVideoIndex);
+    console.log(currentVideoIndex)
     const nextVideoIndex = (currentVideoIndex + 1) % videoList.length;
+    console.log(nextVideoIndex)
     videoElement.style.display = "none";
-    playVideo(nextVideoIndex);
+    videoElement.src = videoPath + videoList[nextVideoIndex];
+    console.log(videoElement.src)
+    videoElement.play();
 }
