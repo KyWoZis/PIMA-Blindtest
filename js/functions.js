@@ -16,6 +16,8 @@ const nameList = [
     "One Piece",
 ];
 
+index = 0;
+
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
     const videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
@@ -49,12 +51,11 @@ function beginBT() {
 
 function nextVideo() {
     const videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
-    const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, "")); // Récupère l'index de la vidéo actuelle
-    console.log(currentVideoIndex) 
-    const nextVideoIndex = (currentVideoIndex + 1) % videoList.length; // Récupère l'index de la prochaine vidéo
-    console.log(nextVideoIndex)
+    console.log(index) 
+    index += 1  % videoList.length
+    console.log(index)
     videoElement.style.display = "block"; // Affiche l'élément vidéo
-    videoElement.src = videoPath + videoList[nextVideoIndex]; // Définit la source de la vidéo
+    videoElement.src = videoPath + videoList[index]; // Définit la source de la vidéo
     console.log(videoElement.src) 
     videoElement.play(); // Démarre la vidéo
     videoElement.addEventListener('pause', function() {
@@ -75,9 +76,8 @@ function nextVideo() {
 function checkAnswer() {
     const textInput = document.getElementById("textInput");
     const videoElement = document.getElementById("video-player");
-    const currentVideoIndex = videoList.indexOf(videoElement.src.replace(videoPath, ""));
     const currentAnswer = textInput.value.trim().toLowerCase();
-    const associatedName = nameList[currentVideoIndex].toLowerCase();
+    const associatedName = nameList[index].toLowerCase();
     if (currentAnswer === associatedName) {
         alert("Bonne réponse !");
     } else {
