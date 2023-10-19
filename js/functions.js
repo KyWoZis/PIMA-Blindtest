@@ -52,7 +52,7 @@ function beginBT() {
 function nextVideo() {
     const videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
     console.log(index) 
-    index += 1  % videoList.length
+    index = (index + 1)  % videoList.length
     console.log(index)
     videoElement.style.display = "block"; // Affiche l'élément vidéo
     videoElement.src = videoPath + videoList[index]; // Définit la source de la vidéo
