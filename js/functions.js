@@ -17,6 +17,7 @@ const nameList = [
 ];
 
 index = 0;
+score = 0;
 
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
@@ -46,6 +47,20 @@ function beginBT() {
     nextButton.style.display = "block";
 
     //à termes il faudra que l'on encapsule nos fonctions pour ne plus avoir à toucher ici
+}
+
+
+function nextButton() {
+    if (index < videoList.length - 1) {
+        nextVideo();
+    }
+    else {
+        endBT();
+    }
+}
+
+function endBT() {
+    alert("Fin du jeu ! Votre score est de " + score + " points.");
 }
 
 
@@ -80,6 +95,7 @@ function checkAnswer() {
     const associatedName = nameList[index].toLowerCase();
     if (currentAnswer === associatedName) {
         alert("Bonne réponse !");
+        score++;
     } else {
         alert("Mauvaise réponse !");
     }
