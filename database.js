@@ -1,7 +1,8 @@
-// const mysql = require('mysql2');
+//Import 
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
 dotenv.config();
+
 // create a connection to the database
 const connection = mysql.createConnection({
     host: process.env.MYSQL_HOST,
@@ -20,7 +21,7 @@ connection.connect((err) => {
     console.log('connected as id ' + connection.threadId);
 });
 
-
+//functions 
 async function getUser() {
     const [rows] = await connection.query("SELECT * FROM test");
     return rows;
@@ -28,5 +29,6 @@ async function getUser() {
 const result = await getUser();
 const rows = result[0];
 console.log(rows);
+
 // close the connection
 connection.end();
