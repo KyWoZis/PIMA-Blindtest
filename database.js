@@ -26,8 +26,7 @@ async function getUser() {
     const [rows] = await connection.query("SELECT * FROM test");
     return rows;
 }
-const result = await getUser();
-const rows = result[0];
+const rows = await getUser();
 console.log(rows);
 
 // close the connection
