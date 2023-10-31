@@ -26,8 +26,28 @@ async function getUsers() {
     const [rows] = await connection.query("SELECT * FROM users");
     return rows;
 }
-const rows = await getUsers();
-console.log(rows);
+
+async function getUserById(id) {
+    const [rows] = await connection.query("SELECT * FROM users WHERE id = ?", [id]);
+    return rows[0];
+}
+
+async function createUser(username, password) {
+    const bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    bcrypt.hash(password, 10, function(err, hash) {
+        if (err) {
+            console.error('error connecting: ' + err.stack);
+            return;
+        }
+        connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
+    });
+}
+
+createUser('testuser', 'testpassword')
+
+//const rows = await getUsers();
+//console.log(rows);
 
 // close the connection
 connection.end();
