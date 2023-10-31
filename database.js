@@ -22,11 +22,11 @@ connection.connect((err) => {
 });
 
 //functions 
-async function getUser() {
-    const [rows] = await connection.query("SELECT * FROM test");
+async function getUsers() {
+    const [rows] = await connection.query("SELECT * FROM users");
     return rows;
 }
-const rows = await getUser();
+const rows = await getUsers();
 console.log(rows);
 
 // close the connection
