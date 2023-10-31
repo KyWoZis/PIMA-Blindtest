@@ -35,13 +35,8 @@ async function getUserById(id) {
 
 async function createUser(username, password) {
     const saltRounds = 10;
-    bcrypt.hash(password, 10, function(err, hash) {
-        if (err) {
-            console.error('error connecting: ' + err.stack);
-            return;
-        }
-        connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
-    });
+    const hash = bcrypt.hashSync(password, saltRounds);
+    await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
 }
 
 createUser('testuser2', 'testpassword')
@@ -50,3 +45,4 @@ createUser('testuser2', 'testpassword')
 //console.log(rows);
 
 // close the connection
+connection.end();
