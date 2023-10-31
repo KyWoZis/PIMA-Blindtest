@@ -44,10 +44,9 @@ async function createUser(username, password) {
     });
 }
 
-createUser('testuser', 'testpassword')
+createUser('testuser2', 'testpassword')
 
 //const rows = await getUsers();
 //console.log(rows);
 
 // close the connection
-connection.end();
