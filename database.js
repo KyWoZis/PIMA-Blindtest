@@ -1,6 +1,7 @@
 //Import 
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 dotenv.config();
 
 // create a connection to the database
@@ -33,7 +34,6 @@ async function getUserById(id) {
 }
 
 async function createUser(username, password) {
-    const bcrypt = require('bcrypt');
     const saltRounds = 10;
     bcrypt.hash(password, 10, function(err, hash) {
         if (err) {
