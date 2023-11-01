@@ -3,6 +3,12 @@ import {getUsers, getUserById, createUser} from './database.js';
 
 const app = express();
 
+https
+  .createServer(app)
+  .listen(3000, ()=>{
+    console.log('server is runing at port 3000')
+  });
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
@@ -11,8 +17,4 @@ app.use((err, req, res, next) => {
 app.get('/users', async (req, res) => {
     const users = await getUsers();
     res.send(users);
-})
-
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
 })
