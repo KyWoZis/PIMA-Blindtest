@@ -1,0 +1,24 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Blindtest
+    script(src="/javascripts/functions.js")
+    //- style
+    link(rel="stylesheet", type="text/css", href='/stylesheets/game.css')
+  body
+    //- Ajout de l'élément vidéo avec l'ID "video-player"
+    video#video-player(controls)
+
+    //- Bouton de lecture de la première musique
+    button#playButton(onclick="beginBT()") Play
+
+    //- Bouton de musique suivant
+    button#nextButton(onclick="nextButton()") Next
+
+    //- Zone de texte
+    input#textInput(type="text", style="display: none")
+
+    //- Bouton de validation de la réponse
+    button#submitButton(onclick="checkAnswer()", style="display: none") Submit
