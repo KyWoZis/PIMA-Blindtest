@@ -3,8 +3,6 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import bodyParser from 'body-parser';
-import fileUpload from 'express-fileupload';
 
 const __dirname = path.resolve();
 
@@ -20,7 +18,7 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json({ limit: '100MB' }));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

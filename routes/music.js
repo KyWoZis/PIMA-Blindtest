@@ -9,34 +9,25 @@ router.get('/getAll', async (req, res) => {
     res.send(music);
 });
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './public/videos');
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.originalname);
-    },
-  });
-  
-  const upload = multer({ storage })
-
 router.get('/add', function(req, res, next) {
     res.render('addMusic');
 });
 
-router.post('/add', upload.single('music_file'), async (req, res) => {
+router.post('/add', multer().any() ,async (req, res) => {
     const {music_name, artist_name, origin, music_type} = req.body;
 
     if (await musicExists(music_name, artist_name, origin, music_type)) {
-        res.status(409).send('Music already exists');
+        window.alert("Music already exists!");
         return;
     }
 
     const [[id]] = await addMusic(music_name, artist_name, origin, music_type);
 
-    const extension = req.file.filename.split('.').pop();
+    const extension = req.files[0].originalname.split('.').pop();
 
-    fs.rename("./public/videos/"+req.file.filename, "./public/videos/"+id.music_id+"."+extension, function(err) {
+    const filepath = "./public/videos/"+id.music_id+"."+extension;
+
+    fs.writeFile(filepath, req.files[0].buffer, function(err) {
         if ( err ) console.log('ERROR: ' + err);
     });
 
