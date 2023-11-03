@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/stylesheets/table.css')
+    title All Data
+  body
+    h1 All Data
+    table
+      thead
+        tr
+          each column, index in data[0]
+            th= column
+          // Generate headers for all columns
+
+      tbody
+        each row in data
+          tr
+            each column in row
+              td= column
+            // Generate cells for all columns

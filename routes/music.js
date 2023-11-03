@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.get('/getAll', async (req, res) => {
     const music = await getMusic();
-    res.send(music);
+    res.render('showMusic', {data: music});
 });
 
 router.get('/add', function(req, res, next) {
@@ -17,7 +17,7 @@ router.post('/add', multer().any() ,async (req, res) => {
     const {music_name, artist_name, origin, music_type} = req.body;
 
     if (await musicExists(music_name, artist_name, origin, music_type)) {
-        window.alert("Music already exists!");
+        window.alert("Music already exists");
         return;
     }
 
