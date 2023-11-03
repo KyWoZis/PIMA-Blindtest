@@ -38,3 +38,18 @@ export async function createUser(username, password) {
     const hash = bcrypt.hashSync(password, saltRounds);
     await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
 }
+
+export async function getMusic() {
+    const [rows] = await connection.query("SELECT * FROM music");
+    return rows;
+}
+
+export async function addMusic(music_name, artist_name, origin, music_type) {
+    await connection.query("INSERT INTO music (music_name, artist_name, origin, music_type) VALUES (?, ?, ?, ?)", [music_name, artist_name, origin, music_type]);
+    return await connection.query("SELECT music_id FROM music WHERE music_name = ? AND artist_name = ? AND origin = ? AND music_type = ?", [music_name, artist_name, origin, music_type]);
+}
+
+export async function musicExists(music_name, artist_name, origin, music_type) {
+    const [rows] = await connection.query("SELECT * FROM music WHERE music_name = ? AND artist_name = ? AND origin = ? AND music_type = ?", [music_name, artist_name, origin, music_type]);
+    return rows.length > 0;
+}

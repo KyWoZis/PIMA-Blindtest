@@ -1,0 +1,23 @@
+extend layout 
+
+block content
+    h1 Music Upload Form
+    form(method='post', action='add', enctype="multipart/form-data")
+      label(for="musicName") Music Name
+      input(type="text", name="music_name", id="musicName", required)
+      br
+      label(for="artistName") Artist Name
+      input(type="text", name="artist_name", id="artistName", required)
+      br
+      label(for="origin") Origin
+      input(type="text", name="origin", id="origin")
+      br
+      label(for="musicType") Music Type
+      input(type="text", name="music_type", id="musicType")
+      br
+      label(for="musicFile") Upload Music File (mkv, mp4, avi)
+      input(type="file", name="music_file", id="musicFile", accept=".mkv, .mp4, .avi")
+      br
+      button(type="submit") Upload
+
+            
