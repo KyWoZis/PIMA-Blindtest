@@ -1,4 +1,4 @@
-public/videos/*.mkv
+public/videos/*.mp4
 upload.sh
 .env
 node_modules/
