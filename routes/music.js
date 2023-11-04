@@ -10,20 +10,27 @@ router.get('/getAll', async (req, res) => {
 });
 
 router.get('/add', function(req, res, next) {
-    res.render('addMusic');
+    res.render('addMusic', {title: "Add Music"});
 });
 
 router.post('/add', multer().any() ,async (req, res) => {
     const {music_name, artist_name, origin, music_type} = req.body;
 
     if (await musicExists(music_name, artist_name, origin, music_type)) {
-        window.alert("Music already exists");
+        res.send("Music already exists.");
+        return;
+    }
+
+    const extension = req.files[0].originalname.split('.').pop();
+
+    console.log(extension);
+
+    if (extension != "mp4") {
+        res.send("Wrong format, only mp4 accepted.");
         return;
     }
 
     const [[id]] = await addMusic(music_name, artist_name, origin, music_type);
-
-    const extension = req.files[0].originalname.split('.').pop();
 
     const filepath = "./public/videos/"+id.music_id+"."+extension;
 
@@ -31,7 +38,7 @@ router.post('/add', multer().any() ,async (req, res) => {
         if ( err ) console.log('ERROR: ' + err);
     });
 
-    res.redirect('./add');
+    res.redirect('./getAll');
 });
 
 router.get('/delete', async (req, res) => {

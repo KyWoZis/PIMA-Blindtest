@@ -1,23 +1,126 @@
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
+  display: inline-table;
+  width: 80%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('background-image.jpg'); /* Set your background image */
+  background-size: cover;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.9); /* Add transparency to the container */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(odd) {
-    background-color: #fff;
-  }
-  
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#addForm {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#addForm label {
+  display: block;
+  margin-bottom: 10px; /* Separation between labels */
+}
+
+#addForm input {
+  width: 100%; /* Make the inputs fill the entire width of the form */
+  padding: 10px;
+  margin-bottom: 15px; /* Separation between input fields */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#addForm button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#closeButton {
+    background-color: #ff3333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#addFormContainer {
+  display: none;
+}
+
+#addButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#deleteButton {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+tbody td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border: none;
+  background-color: white;
+}
