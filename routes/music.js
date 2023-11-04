@@ -4,7 +4,7 @@ import fs from 'fs';
 import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
 var router = express.Router();
 
-router.get('/getAll', async (req, res) => {
+router.get('/database', async (req, res) => {
     const music = await getMusic();
     res.render('showMusic', {data: music});
 });
@@ -38,7 +38,7 @@ router.post('/add', multer().any() ,async (req, res) => {
         if ( err ) console.log('ERROR: ' + err);
     });
 
-    res.redirect('./getAll');
+    res.redirect('./database');
 });
 
 router.get('/delete', async (req, res) => {
@@ -47,7 +47,7 @@ router.get('/delete', async (req, res) => {
     fs.unlink("./public/videos/"+id+".mp4", function(err) {
         if ( err ) console.log('ERROR: ' + err);
     });
-    res.redirect('./getAll');
+    res.redirect('./database');
 });
 
 export default router;
