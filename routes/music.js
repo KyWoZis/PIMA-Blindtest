@@ -21,6 +21,11 @@ router.post('/add', multer().any() ,async (req, res) => {
         return;
     }
 
+    if (req.files.length === 0) {
+        res.send("You need to upload a file.");
+        return;
+    }
+
     const extension = req.files[0].originalname.split('.').pop();
 
     console.log(extension);
