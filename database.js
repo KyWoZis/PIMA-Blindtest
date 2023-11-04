@@ -53,3 +53,7 @@ export async function musicExists(music_name, artist_name, origin, music_type) {
     const [rows] = await connection.query("SELECT * FROM music WHERE music_name = ? AND artist_name = ? AND origin = ? AND music_type = ?", [music_name, artist_name, origin, music_type]);
     return rows.length > 0;
 }
+
+export async function deleteMusic(music_id) {
+    await connection.query("DELETE FROM music WHERE music_id = ?", [music_id]);
+}

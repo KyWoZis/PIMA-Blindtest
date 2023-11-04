@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import {getMusic, addMusic, musicExists} from '../database.js';
+import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
 var router = express.Router();
 
 router.get('/getAll', async (req, res) => {
@@ -32,6 +32,15 @@ router.post('/add', multer().any() ,async (req, res) => {
     });
 
     res.redirect('./add');
+});
+
+router.get('/delete', async (req, res) => {
+    const id = req.query.id;
+    await deleteMusic(id);
+    fs.unlink("./public/videos/"+id+".mp4", function(err) {
+        if ( err ) console.log('ERROR: ' + err);
+    });
+    res.redirect('./getAll');
 });
 
 export default router;

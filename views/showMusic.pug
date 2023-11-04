@@ -17,4 +17,8 @@ html
           tr
             each column in row
               td= column
+            td
+                form(action='delete', method='get')
+                    input(type='hidden', name='id', value=row.music_id)
+                    button(type='submit') Delete
             // Generate cells for all columns
