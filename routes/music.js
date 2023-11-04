@@ -6,6 +6,9 @@ var router = express.Router();
 
 router.get('/database', async (req, res) => {
     const music = await getMusic();
+    if (music.length === 0) {
+        res.render('addMusic');
+    }
     res.render('showMusic', {data: music});
 });
 

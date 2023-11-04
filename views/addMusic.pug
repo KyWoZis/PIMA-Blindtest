@@ -1,22 +1,24 @@
-extend layout 
-
+html
+  head
+    link(rel='stylesheet', href='/stylesheets/table.css')
+    title Music Database Add
 block content
-    form(method='post', action='add', enctype="multipart/form-data")
-      label(for="musicName") Music Name
-      input(type="text", name="music_name", id="musicName", required)
-      br
-      label(for="artistName") Artist Name
-      input(type="text", name="artist_name", id="artistName", required)
-      br
-      label(for="origin") Origin
-      input(type="text", name="origin", id="origin")
-      br
-      label(for="musicType") Music Type
-      input(type="text", name="music_type", id="musicType")
-      br
-      label(for="musicFile") Upload Music File (mp4)
-      input(type="file", name="music_file", id="musicFile", accept=".mp4")
-      br
-      button(type="submit") Upload
-
-            
+    #addform 
+      form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          label(for='musicName') Music Name
+          input(type='text', name='music_name', id='musicName', required)
+          br
+          label(for='artistName') Artist Name
+          input(type='text', name='artist_name', id='artistName', required)
+          br
+          label(for='origin') Origin
+          input(type='text', name='origin', id='origin')
+          br
+          label(for='musicType') Music Type
+          input(type='text', name='music_type', id='musicType')
+          br
+          label(for='musicFile') Upload Music File (mp4)
+          input(type='file', name='music_file', id='musicFile', accept='.mp4', required)
+          br
+          button(type='submit') Upload
