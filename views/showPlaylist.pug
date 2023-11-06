@@ -1,0 +1,68 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/stylesheets/table.css')
+    title Music Database
+  body
+    table
+      thead
+        tr
+          each column, index in data[0]
+            th= index
+          th Actions
+          // Generate headers for all columns and add an "Actions" header
+
+      tbody
+        each row in data
+          tr
+            each column in row
+              td= column
+            td
+                form(action='delete', method='get')
+                    input(type='hidden', name='id', value=row.music_id)
+                    button#deleteButton(type='submit') Delete
+                // Add a "Delete" button for each row
+        
+        tr
+        each column in data[0]
+          td
+        td
+          button#addButton(type='button') Add
+    // Add an "Add" button row
+
+    .overlay#addFormContainer
+      #addForm
+        h2 Add Data
+        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          label(for='musicName') Music Name
+          input(type='text', name='music_name', id='musicName', required)
+          br
+          label(for='artistName') Artist Name
+          input(type='text', name='artist_name', id='artistName', required)
+          br
+          label(for='origin') Origin
+          input(type='text', name='origin', id='origin')
+          br
+          label(for='musicType') Music Type
+          input(type='text', name='music_type', id='musicType')
+          br
+          label(for='musicFile') Upload Music File (mp4)
+          input(type='file', name='music_file', id='musicFile', accept='.mp4', required)
+          br
+          button(type='submit') Upload
+        button#closeButton(type='button') Close
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const addButton = document.getElementById('addButton');
+        const addFormContainer = document.getElementById('addFormContainer');
+        const closeFormButton = document.getElementById('closeButton');
+
+        addButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'flex';
+        });
+
+        closeFormButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'none';
+        });
+      });
