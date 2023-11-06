@@ -88,3 +88,13 @@ export async function createPlaylist(user_id, playlistName) {
         console.error('An error occurred:', error);
     }
 }
+
+// Get the playlists of a given user
+export async function getPlaylists(user_id) {
+    try {
+        const [rows] = await connection.query(`SELECT * FROM playlists WHERE user_id = ?`, [user_id]);
+        return rows;
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
