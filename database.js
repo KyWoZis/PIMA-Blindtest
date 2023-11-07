@@ -82,7 +82,7 @@ export async function createPlaylist(user_id, playlistName) {
 
         await connection.query(`CREATE TABLE ${tableName} (music_id INT NOT NULL)`);
         console.log('The playlist has been created successfully.');
-        await connection.query(`INSERT INTO playlists (user_id, playlist_name) VALUES (?, ?)`, [user_id, playlistName]);
+        await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, playlistName]);
         console.log('The playlist has been added to the playlists table successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
@@ -92,7 +92,7 @@ export async function createPlaylist(user_id, playlistName) {
 // Get the playlists of a given user
 export async function getPlaylists(user_id) {
     try {
-        const [rows] = await connection.query(`SELECT * FROM playlists WHERE user_id = ?`, [user_id]);
+        const [rows] = await connection.query(`SELECT * FROM playlist_list WHERE user_id = ?`, [user_id]);
         return rows;
     } catch (error) {
         console.error('An error occurred:', error);
