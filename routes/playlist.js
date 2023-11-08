@@ -1,60 +1,38 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
+import {addMusicToPlaylist, removeMusicFromPlaylist, createPlaylist, removePlaylist, getPlaylists, getSongsFromPlaylist} from '../database.js';
+import { create } from 'domain';
 var router = express.Router();
 
 router.get('/database', async (req, res) => {
-    const music = await getMusic();
-    if (music.length === 0) {
-        res.render('addMusic');
+    const allPlaylists = await getAllPlaylists();
+    if (allPlaylists.length === 0) {
+        res.render('createPlaylist');
     }
-    res.render('showMusic', {data: music});
+    res.render('showPlaylist', {data: playlist_list});
 });
 
 router.get('/add', function(req, res, next) {
-    res.render('addMusic', {title: "Add Music"});
+    res.render('createPlaylist', {title: "Add a playlist"});
 });
 
 router.post('/add', multer().any() ,async (req, res) => {
-    const {music_name, artist_name, origin, music_type} = req.body;
+    const {user_id, playlistName} = req.body;
 
-    if (await musicExists(music_name, artist_name, origin, music_type)) {
-        res.send("Music already exists.");
+    if (await playlistExists(user_id, playlistName)) {
+        res.send("Playlist already exists.");
         return;
     }
 
-    if (req.files.length === 0) {
-        res.send("You need to upload a file.");
-        return;
-    }
-
-    const extension = req.files[0].originalname.split('.').pop();
-
-    console.log(extension);
-
-    if (extension != "mp4") {
-        res.send("Wrong format, only mp4 accepted.");
-        return;
-    }
-
-    const [[id]] = await addMusic(music_name, artist_name, origin, music_type);
-
-    const filepath = "./public/videos/"+id.music_id+"."+extension;
-
-    fs.writeFile(filepath, req.files[0].buffer, function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
+    const [[id]] = await createPlaylist(user_id, playlistName);
 
     res.redirect('./database');
 });
 
 router.get('/delete', async (req, res) => {
-    const id = req.query.id;
-    await deleteMusic(id);
-    fs.unlink("./public/videos/"+id+".mp4", function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
+    const {user_id, playlistName} = req.body;
+    await removePlaylist(user_id, playlistName);
     res.redirect('./database');
 });
 

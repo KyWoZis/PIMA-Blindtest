@@ -6,7 +6,9 @@ block content
     #addform 
       form#addDataForm(action='add', method='post', enctype='multipart/form-data')
           // Input fields for adding data
+          label(for='user_id') User ID
+          input(type='text', name='user_id', id='user_id', required)
           label(for='playlistName') Playlist Name
-          input(type='text', name='music_name', id='playlistName', required)
+          input(type='text', name='playlistName', id='playlistName', required)
           br
           button(type='submit') Upload

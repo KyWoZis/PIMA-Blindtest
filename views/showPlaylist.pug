@@ -19,7 +19,7 @@ html
               td= column
             td
                 form(action='delete', method='get')
-                    input(type='hidden', name='id', value=row.music_id)
+                    input(type='hidden', name='user_id', value=row.user_id)
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
         
@@ -31,24 +31,14 @@ html
     // Add an "Add" button row
 
     .overlay#addFormContainer
-      #addForm
-        h2 Add Data
-        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+      #addform 
+      h2 Add Data
+      form#addDataForm(action='add', method='post', enctype='multipart/form-data')
           // Input fields for adding data
-          label(for='musicName') Music Name
-          input(type='text', name='music_name', id='musicName', required)
-          br
-          label(for='artistName') Artist Name
-          input(type='text', name='artist_name', id='artistName', required)
-          br
-          label(for='origin') Origin
-          input(type='text', name='origin', id='origin')
-          br
-          label(for='musicType') Music Type
-          input(type='text', name='music_type', id='musicType')
-          br
-          label(for='musicFile') Upload Music File (mp4)
-          input(type='file', name='music_file', id='musicFile', accept='.mp4', required)
+          label(for='user_id') User ID
+          input(type='text', name='user_id', id='user_id', required)
+          label(for='playlistName') Playlist Name
+          input(type='text', name='playlistName', id='playlistName', required)
           br
           button(type='submit') Upload
         button#closeButton(type='button') Close
