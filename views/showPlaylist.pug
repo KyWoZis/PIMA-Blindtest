@@ -2,7 +2,7 @@ doctype html
 html
   head
     link(rel='stylesheet', href='/stylesheets/table.css')
-    title Playlist Database
+    title Music Database
   body
     table
       thead
@@ -18,8 +18,8 @@ html
             each column in row
               td= column
             td
-    test            form(action='delete', method='get')
-    test                input(type='hidden', name='user_id', value=row.user_id)
+                form(action='delete', method='get')
+                    input(type='hidden', name='id', value=row.music_id)
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
         
@@ -31,9 +31,9 @@ html
     // Add an "Add" button row
 
     .overlay#addFormContainer
-      #addform 
-      h2 Add Data
-      form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+      #addForm
+        h2 Add Data
+        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
           // Input fields for adding data
           label(for='user_id') User ID
           input(type='text', name='user_id', id='user_id', required)

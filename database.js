@@ -2,6 +2,7 @@
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { table } from 'console';
 dotenv.config();
 
 // create a connection to the database
@@ -91,9 +92,9 @@ export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
 export async function createPlaylist(user_id, playlistName) {
     try {
         const escapedPlaylistName = connection.escape(playlistName); // Escape the playlistName to avoid SQL injection
-        const tableName = `playlist_${user_id}_${escapedPlaylistName}`; // Get the table name
+        const tableName = `playlist_${user_id}_${playlistName}`; // Get the table name
 
-        await connection.query(`CREATE TABLE ${tableName} (music_id INT NOT NULL)`);
+        await connection.query(`CREATE TABLE ? (music_id INT NOT NULL PRIMARY KEY, rank INT AUTO_INCREMENT)`, [tableName]); // Create the playlist
         console.log('The playlist has been created successfully.');
         await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, playlistName]);
         console.log('The playlist has been added to the playlists table successfully.');
@@ -107,7 +108,7 @@ export async function createPlaylist(user_id, playlistName) {
 export async function removePlaylist(user_id, playlistName) {
     try {
         const escapedPlaylistName = connection.escape(playlistName); // Escape the playlistName to avoid SQL injection
-        const tableName = `playlist_${user_id}_${escapedPlaylistName}`; // Get the table name
+        const tableName = 'playlist_${user_id}_${escapedPlaylistName}'; // Get the table name
 
         await connection.query(`DROP TABLE ${tableName}`); // Remove the playlist
         console.log('The playlist has been removed successfully.');

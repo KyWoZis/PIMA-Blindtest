@@ -24,6 +24,9 @@ router.post('/add', multer().any() ,async (req, res) => {
         res.send("Playlist already exists.");
         return;
     }
+    else {
+        await createPlaylist(user_id, playlistName);
+    }
 
     res.redirect('./database');
 });
