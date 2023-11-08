@@ -128,7 +128,20 @@ export async function getPlaylists(user_id) {
     }
 }
 
-//Get the songs of a given playlist
+
+// Get every playlist
+export async function getAllPlaylists() {
+    try {
+        const [rows] = await connection.query(`SELECT * FROM playlist_list`);
+        return rows;
+    }
+    catch (error) {
+        console.error('An error occurred:', error);
+    }   
+}
+
+
+// Get the songs of a given playlist
 export async function getSongsFromPlaylist(user_id, playlistName) {
     try {
         const escapedPlaylistName = connection.escape(playlistName); // Escape the playlistName to avoid SQL injection
@@ -137,6 +150,20 @@ export async function getSongsFromPlaylist(user_id, playlistName) {
         const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
         return rows;
     } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+// Check if a playlist already exists for a given user
+export async function playlistExists(user_id, playlistName) {
+    try {
+        const escapedPlaylistName = connection.escape(playlistName); // Escape the playlistName to avoid SQL injection
+        const tableName = `playlist_${user_id}_${escapedPlaylistName}`; // Get the table name
+
+        const [rows] = await connection.query(`SHOW TABLES LIKE '${tableName}'`);
+        return rows.length > 0;
+    }
+    catch (error) {
         console.error('An error occurred:', error);
     }
 }
