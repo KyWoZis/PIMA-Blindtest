@@ -10,7 +10,7 @@ router.get('/database', async (req, res) => {
     if (allPlaylists.length === 0) {
         res.render('createPlaylist');
     }
-    res.render('showPlaylist', {data: playlist_list});
+    res.render('showPlaylist', {data: allPlaylists});
 });
 
 router.get('/add', function(req, res, next) {
