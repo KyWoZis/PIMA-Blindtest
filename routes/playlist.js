@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import {addMusicToPlaylist, removeMusicFromPlaylist, createPlaylist, removePlaylist, getPlaylists, getSongsFromPlaylist} from '../database.js';
+import {addMusicToPlaylist, removeMusicFromPlaylist, createPlaylist, removePlaylist, getPlaylists, getAllPlaylists, getSongsFromPlaylist, playlistExists} from '../database.js';
 import { create } from 'domain';
 var router = express.Router();
 
@@ -24,8 +24,6 @@ router.post('/add', multer().any() ,async (req, res) => {
         res.send("Playlist already exists.");
         return;
     }
-
-    const [[id]] = await createPlaylist(user_id, playlistName);
 
     res.redirect('./database');
 });
