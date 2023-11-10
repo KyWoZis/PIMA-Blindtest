@@ -15,7 +15,7 @@ CREATE TABLE playlist_list (
     playlist_name varchar(100) primary key
 );;
 
--- user still need to be added, 
+-- users table, the password is hashed with bcrypt, the is_admin is a boolean to know if the user is an admin or not
 
 CREATE TABLE users (
     user_id int primary key AUTO_INCREMENT,
