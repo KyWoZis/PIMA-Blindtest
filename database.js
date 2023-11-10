@@ -104,15 +104,12 @@ export async function createPlaylist(user_id, playlistName) {
 }
 
 
-// Remove a playlist of a given user
-export async function removePlaylist(user_id, playlistName) {
+// Remove a playlist
+export async function removePlaylist(user_id,playlistName) {
     try {
-        const escapedPlaylistName = connection.escape(playlistName); // Escape the playlistName to avoid SQL injection
-        const tableName = 'playlist_${user_id}_${escapedPlaylistName}'; // Get the table name
-
-        await connection.query(`DROP TABLE ${tableName}`); // Remove the playlist
+        await connection.query(`DROP TABLE playlist_${user_id}_${playlistName}`); // Remove the playlist
         console.log('The playlist has been removed successfully.');
-        await connection.query(`DELETE FROM playlist_list WHERE user_id = ? AND playlist_name = ?`, [user_id, playlistName]);
+        await connection.query(`DELETE FROM playlist_list WHERE playlist_name = ?`, [playlistName]);
         console.log('The playlist has been removed from the playlists table successfully.');
     } catch (error) {
         console.error('An error occurred:', error);

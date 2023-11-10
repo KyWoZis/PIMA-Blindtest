@@ -19,7 +19,8 @@ html
               td= column
             td
                 form(action='delete', method='get')
-                    input(type='hidden', name='id', value=row.music_id)
+                    input(type='hidden', name='user_id', value=row.user_id)
+                    input(type='hidden', name='playlist_name', value=row.playlist_name)
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
         
