@@ -11,7 +11,7 @@ CREATE TABLE music (
 
 --this is not a playlist, but the list of the playlists, since the playlist_name will be unique, it's the key, it will reference another table having the same name
 CREATE TABLE playlist_list (
-    playlist_id primary key AUTO_INCREMENT,
+    playlist_id int primary key AUTO_INCREMENT,
     user_id int NOT NULL,
     playlist_name varchar(100) 
 );;
