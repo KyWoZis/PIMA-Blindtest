@@ -76,7 +76,6 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
 // Get the id of a playlist, given the user_id and the playlist name
 export async function getPlaylistId(user_id, playlistName) {
     try {
-        console.log("entering getPlaylistId")
         return await connection.query(`SELECT playlist_id FROM playlist_list WHERE user_id = ? AND playlist_name = ?`, [user_id, connection.escape(playlistName)]);  
     } catch (error) {
         console.error('An error occurred:', error);
