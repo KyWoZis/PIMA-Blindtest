@@ -33,8 +33,8 @@ router.post('/add', multer().any() ,async (req, res) => {
 
 router.get('/delete', async (req, res) => {
     const user_id = req.query.user_id;
-    const playlistName = req.query.playlist_name;
-    await removePlaylist(user_id,playlistName);
+    const playlist_id = req.query.playlist_id;
+    await removePlaylist(user_id,playlist_id);
     res.redirect('./database');
 });
 
