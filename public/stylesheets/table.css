@@ -124,3 +124,7 @@ tbody tr:last-child td {
   border: none;
   background-color: white;
 }
+
+#progress-bar {
+  display: none;
+}
