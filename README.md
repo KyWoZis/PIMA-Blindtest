@@ -18,3 +18,14 @@ Il faut configurer un fichier .env, un template se trouve dans le fichier **.env
 Un fichier template.sql indique ce qu'il faut setup dans la base de donnée SQL pour pouvoir permettre au site de fonctionner. (Les tables nécessaires)
 
 Après ça, la commande `npm run devstart` est censée run le projet.
+
+# Où est le site ?
+
+Si c'est en local:
+localhost:1443/<url>
+Où url dépend de ce que vous voulez faire
+Par exemple, pour accéder à la page de gestion des musiques : localhost:1443/music/database
+
+Si c'est en ligne:
+TODO
+Le site n'est pas encore à 100% terminé et il sera en ligne lorsqu'il sera au moins utilisable
