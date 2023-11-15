@@ -97,6 +97,10 @@ body {
   display: none;
 }
 
+#editFormContainer {
+  display: none;
+}
+
 #addButton {
   background-color: #007bff;
   color: #fff;
