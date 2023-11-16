@@ -5,13 +5,15 @@ CREATE TABLE music (
     music_name varchar(100) NOT NULL, 
     artist_name varchar(100) NOT NULL, 
     origin varchar(100), 
-    music_type varchar(100)                  
+    music_type varchar(100)
     );;
+
 
 --this is not a playlist, but the list of the playlists, since the playlist_name will be unique, it's the key, it will reference another table having the same name
 CREATE TABLE playlist_list (
+    playlist_id int primary key AUTO_INCREMENT,
     user_id int NOT NULL,
-    playlist_name varchar(100) primary key
+    playlist_name varchar(100) 
 );;
 
 -- users table, the password is hashed with bcrypt, the is_admin is a boolean to know if the user is an admin or not

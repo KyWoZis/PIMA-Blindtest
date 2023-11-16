@@ -97,6 +97,10 @@ body {
   display: none;
 }
 
+#editFormContainer {
+  display: none;
+}
+
 #addButton {
   background-color: #007bff;
   color: #fff;
@@ -123,4 +127,8 @@ tbody td:last-child {
 tbody tr:last-child td {
   border: none;
   background-color: white;
+}
+
+#progress-bar {
+  display: none;
 }

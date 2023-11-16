@@ -1,5 +1,4 @@
 import express from 'express';
-import multer from 'multer';
 import fs from 'fs';
 import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
 var router = express.Router();
@@ -16,7 +15,8 @@ router.get('/add', function(req, res, next) {
     res.render('addMusic', {title: "Add Music"});
 });
 
-router.post('/add', multer().any() ,async (req, res) => {
+router.post('/add', async (req, res) => {
+
     const {music_name, artist_name, origin, music_type} = req.body;
 
     if (await musicExists(music_name, artist_name, origin, music_type)) {
@@ -29,9 +29,7 @@ router.post('/add', multer().any() ,async (req, res) => {
         return;
     }
 
-    const extension = req.files[0].originalname.split('.').pop();
-
-    console.log(extension);
+    const extension = req.files.music_file.name.split('.').pop();
 
     if (extension != "mp4") {
         res.send("Wrong format, only mp4 accepted.");
@@ -42,11 +40,11 @@ router.post('/add', multer().any() ,async (req, res) => {
 
     const filepath = "./public/videos/"+id.music_id+"."+extension;
 
-    fs.writeFile(filepath, req.files[0].buffer, function(err) {
+    fs.writeFile(filepath, req.files.music_file.data, function(err) {
         if ( err ) console.log('ERROR: ' + err);
     });
 
-    res.redirect('./database');
+    res.json({ redirectTo: './database' });
 });
 
 router.get('/delete', async (req, res) => {
