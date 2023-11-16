@@ -23,7 +23,9 @@ Après ça, la commande `npm run devstart` est censée run le projet.
 
 Si c'est en local:
 localhost:1443/<url>
+
 Où url dépend de ce que vous voulez faire
+
 Par exemple, pour accéder à la page de gestion des musiques : localhost:1443/music/database
 
 Si c'est en ligne:
