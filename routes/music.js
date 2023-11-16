@@ -7,12 +7,15 @@ router.get('/database', async (req, res) => {
     const music = await getMusic();
     if (music.length === 0) {
         res.render('addMusic');
+        return;
     }
     res.render('showMusic', {data: music});
+    return;
 });
 
 router.get('/add', function(req, res, next) {
     res.render('addMusic', {title: "Add Music"});
+    return;
 });
 
 router.post('/add', async (req, res) => {
@@ -45,6 +48,7 @@ router.post('/add', async (req, res) => {
     });
 
     res.json({ redirectTo: './database' });
+    return;
 });
 
 router.get('/delete', async (req, res) => {
@@ -54,6 +58,7 @@ router.get('/delete', async (req, res) => {
         if ( err ) console.log('ERROR: ' + err);
     });
     res.redirect('./database');
+    return;
 });
 
 export default router;

@@ -7,12 +7,15 @@ router.get('/database', async (req, res) => {
     const allPlaylists = await getAllPlaylists();
     if (allPlaylists.length === 0) {
         res.render('createPlaylist');
+        return;
     }
     res.render('showPlaylist', {data: allPlaylists});
+    return;
 });
 
 router.get('/add', function(req, res, next) {
     res.render('createPlaylist', {title: "Add a playlist"});
+    return;
 });
 
 router.post('/add', async (req, res) => {
@@ -27,6 +30,7 @@ router.post('/add', async (req, res) => {
     }
 
     res.redirect('./database');
+    return;
 });
 
 router.get('/delete', async (req, res) => {
@@ -34,6 +38,7 @@ router.get('/delete', async (req, res) => {
     const playlist_id = req.query.playlist_id;
     await removePlaylist(user_id,playlist_id);
     res.redirect('./database');
+    return;
 });
 
 export default router;
