@@ -1,0 +1,133 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/stylesheets/table.css')
+    title Music Database
+  body
+    table
+      thead
+        tr
+          each column, index in data[0]
+            th= index
+          th Actions
+          // Generate headers for all columns and add an "Actions" header
+
+      tbody
+        each row in data
+          tr
+            each column in row
+              td= column
+            td
+                form(action='delete', method='get')
+                    input(type='hidden', name='id', value=row.music_id)
+                    button#deleteButton(type='submit') Delete
+                // Add a "Delete" button for each row
+        
+        tr
+        each column in data[0]
+          td
+        td
+          button#addButton(type='button') Add
+    // Add an "Add" button row
+
+    .overlay#addFormContainer
+      #addForm
+        h2 Add Data
+        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          label(for='musicName') Music Name
+          input(type='text', name='music_name', id='musicName', required)
+          br
+          label(for='artistName') Artist Name
+          input(type='text', name='artist_name', id='artistName', required)
+          br
+          label(for='origin') Origin
+          input(type='text', name='origin', id='origin')
+          br
+          label(for='musicType') Music Type
+          input(type='text', name='music_type', id='musicType')
+          br
+          label(for='musicFile') Upload Music File (mp4)
+          input(type='file', name='music_file', id='musicFile', accept='.mp4', required)
+          br
+          button(type='submit') Upload
+        div
+          label(for='progress-bar')
+          progress#progress-bar(value='0', max='100')
+        button#closeButton(type='button') Close
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const addButton = document.getElementById('addButton');
+        const addFormContainer = document.getElementById('addFormContainer');
+        const closeFormButton = document.getElementById('closeButton');
+
+        addButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'flex';
+        });
+
+        closeFormButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'none';
+        });
+      });
+
+      const form = document.getElementById('addDataForm');
+      const bar = document.getElementById('progress-bar');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        const file = document.getElementById('musicFile');
+        const img = file.files[0];
+        formData.append('music_file', img);
+        formData.append('music_name', document.getElementById('musicName').value);
+        formData.append('artist_name', document.getElementById('artistName').value);
+        formData.append('origin', document.getElementById('origin').value);
+        formData.append('music_type', document.getElementById('musicType').value);
+        
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'add', true);
+
+        document.getElementById('progress-bar').style.display = 'inline'
+
+        xhr.upload.onprogress = function (e) {
+          if (e.lengthComputable) {
+            const percentCompleted = Math.round((e.loaded / e.total) * 100);
+            bar.setAttribute('value', percentCompleted);
+            bar.previousElementSibling.textContent = `${percentCompleted}%`;
+            if (percentCompleted === 100) {
+              bar.previousElementSibling.textContent = `Upload complete!`;
+            }
+          }
+        };
+
+        xhr.onload = function () {
+          // Handle the completion of the upload
+          if (xhr.status >= 200 && xhr.status < 300) {
+            // Successful upload
+            console.log('Upload successful');
+
+            // Check if there's a redirectTo property in the response
+            try {
+              const responseData = JSON.parse(xhr.responseText);
+              if (responseData.redirectTo) {
+                // Redirect to the specified URL
+                window.location.href = responseData.redirectTo;
+              }
+            } catch (error) {
+              console.error('Error parsing server response:', error);
+            }
+          } else {
+            // Handle errors
+            console.error('Upload failed with status:', xhr.status);
+          }
+        };
+
+
+        xhr.onerror = function () {
+          // Handle network errors
+          console.error('Network error during upload');
+        };
+
+        xhr.send(formData);
+      })
