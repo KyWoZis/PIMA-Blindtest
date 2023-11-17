@@ -2,17 +2,23 @@ doctype html
 html
   head
     link(rel='stylesheet', href='/stylesheets/table.css')
+    script(src="/javascripts/updateTable.js")
     title Music Database
   body
     table
       thead
+        tr
+          th(colspan=5)
+            input(type='text', name='search', id='search')
+          th
+            button#addButton(type='button') Add
         tr
           each column, index in data[0]
             th= index
           th Actions
           // Generate headers for all columns and add an "Actions" header
 
-      tbody
+      tbody#tableBody
         each row in data
           tr
             each column in row
@@ -22,13 +28,6 @@ html
                     input(type='hidden', name='id', value=row.music_id)
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
-        
-        tr
-        each column in data[0]
-          td
-        td
-          button#addButton(type='button') Add
-    // Add an "Add" button row
 
     .overlay#addFormContainer
       #addForm
@@ -131,3 +130,14 @@ html
 
         xhr.send(formData);
       })
+
+      //load db with data from html
+      const db = !{JSON.stringify(data)};
+
+      const searchInput = document.getElementById('search');
+      //add event listener to search button
+
+      searchInput.addEventListener('input', function() {
+        const searchValue = searchInput.value;
+        updateTable(searchValue, db);
+      });
