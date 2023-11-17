@@ -61,4 +61,9 @@ router.get('/delete', async (req, res) => {
     return;
 });
 
+router.get('/getDatabase', async (req, res) => {
+    const [music] = await getMusic();
+    return music;
+});
+
 export default router;

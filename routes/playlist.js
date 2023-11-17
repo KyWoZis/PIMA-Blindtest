@@ -41,4 +41,10 @@ router.get('/delete', async (req, res) => {
     return;
 });
 
+router.get('/editPlaylist', async (req, res) => {
+    const playlist_id = req.query.playlist_id;
+    res.render('editPlaylist', {data: playlist_id });
+    return;
+});
+
 export default router;
