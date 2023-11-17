@@ -136,8 +136,14 @@ html
 
       const searchInput = document.getElementById('search');
       //add event listener to search button
+      var old_size = 0;
 
       searchInput.addEventListener('input', function() {
         const searchValue = searchInput.value;
-        updateTable(searchValue, db);
+        var new_size = searchValue.length;
+        //update after input value > 2
+        if (new_size >= 2 || new_size < old_size) {
+          updateTable(searchValue, db);
+        }
+        old_size = new_size;
       });
