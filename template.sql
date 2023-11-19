@@ -20,7 +20,7 @@ CREATE TABLE playlist_list (
 
 CREATE TABLE users (
     user_id int primary key AUTO_INCREMENT,
-    username varchar(12) NOT NULL UNIQUE,
+    username varchar(100) NOT NULL UNIQUE,
     password varchar(64) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE
 );;

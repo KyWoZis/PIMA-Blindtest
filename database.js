@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { table } from 'console';
 import { get } from 'http';
-dotenv.config();
+
 
 // create a connection to the database
 const connection = mysql.createConnection({
@@ -33,6 +33,17 @@ export async function getUsers() {
 export async function getUserById(id) {
     const [rows] = await connection.query("SELECT * FROM users WHERE id = ?", [id]);
     return rows[0];
+}
+
+export async function checkUser(username, password) {
+    const [rows] = await connection.query("SELECT * FROM users WHERE username = ?", [username]);
+    if (rows.length === 0) {
+        return false;
+    }
+    if (bcrypt.compareSync(password, rows[0].password)) {
+        return rows[0];
+    }
+    return false;
 }
 
 export async function createUser(username, password) {

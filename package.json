@@ -26,7 +26,8 @@
     "mysql2": "^3.6.3",
     "n": "^9.2.0",
     "node": "^21.1.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
