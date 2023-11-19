@@ -1,9 +1,12 @@
 import express from 'express';
-var router = express.Router();
+
 import dotenv from 'dotenv';
 var JWT_SECRET = process.env.JWT_SECRET;
 import {checkUser} from '../database.js';
 var jwt = require('jsonwebtoken');
+
+var router = express.Router();
+
 
 router.get('/login', function(req, res, next) {
     res.render('login');
@@ -22,3 +25,5 @@ router.post('/login', async function(req, res, next) {
         res.send("Wrong username or password.");
     }
 });
+
+export default router;
