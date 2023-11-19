@@ -1,19 +1,21 @@
 import express from 'express';
 
 import dotenv from 'dotenv';
+
+dotenv.config();
+
 var JWT_SECRET = process.env.JWT_SECRET;
 import {checkUser} from '../database.js';
 import jsonwebtoken from 'jsonwebtoken';
 
 var router = express.Router();
 
-
-router.get('/login', function(req, res, next) {
+router.get('/', function(req, res, next) {
     res.render('login');
     return;
 });
 
-router.post('/login', async function(req, res, next) {
+router.post('/', async function(req, res, next) {
     const {username, password} = req.body;
     const user = await checkUser(username, password);
     if (user) {

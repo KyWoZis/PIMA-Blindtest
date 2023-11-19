@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { table } from 'console';
 import { get } from 'http';
 
+dotenv.config();
 
 // create a connection to the database
 const connection = mysql.createConnection({

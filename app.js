@@ -12,7 +12,7 @@ import usersRouter from './routes/users.js';
 import musicRouter from './routes/music.js';
 import playlistRouter from './routes/playlist.js';
 import loginRouter from './routes/login.js';
-
+import registerRouter from './routes/register.js';
 
 var app = express();
 dotenv.config();
@@ -33,7 +33,7 @@ app.use('/users', usersRouter);
 app.use('/music', musicRouter);
 app.use('/playlist', playlistRouter);
 app.use('/login', loginRouter);
-
+app.use('/register', registerRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
