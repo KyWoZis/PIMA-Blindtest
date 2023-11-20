@@ -2,6 +2,7 @@ table {
   border-collapse: separate;
   width: 80%;
   border-spacing: 0;
+  margin-top: 10%;
 }
 
 th, td {
@@ -28,7 +29,7 @@ body {
   background-attachment: fixed;
   margin: 0;
   padding: 0;
-  margin-top: 10%;
+  margin-top: 1%;
   margin-bottom: 10%;
   display: flex;
   justify-content: center;
