@@ -9,7 +9,12 @@ html
       thead
         tr
           th(colspan=2)
-            input(type="text", name="page", id="page", value="1")
+            button(id='prevPage', onclick='changePage(-1)') &lt; Prev
+            label(for='pageNumber') Page:
+            select(id='pageNumber', onchange='changePage()', value='1')
+            button(id='nextPage', onclick='changePage(1)') Next &gt;
+
+            p(id='selectedPage') Selected Page: 1
           th(colspan=3)
             input(type='text', name='search', id='search')
           th
@@ -133,17 +138,31 @@ html
 
       searchInput.addEventListener('input', function() {
         const searchValue = searchInput.value;
-        var new_size = searchValue.length;
-        //update after input value > 2
-        if (new_size >= 2 || new_size < old_size) {
-          updateTable(searchValue, db, 1);
-        }
-        old_size = new_size;
+        updateTable(searchValue, db, 1);
       });
 
-      const pageInput = document.getElementById('page');
-      //add event listener for page input
-      pageInput.addEventListener('input', function() {
-        const pageValue = pageInput.value;
-        updateTable(searchInput.value, db, pageValue);
+      var currentPage = 1;
+
+      function changePage(offset = 0) {
+        var selectElement = document.getElementById('pageNumber');
+        var selectedPageElement = document.getElementById('selectedPage');
+        var prevPageButton = document.getElementById('prevPage');
+        var nextPageButton = document.getElementById('nextPage');
+
+        currentPage = parseInt(selectElement.value) + offset;
+
+        // Update selected page
+        selectElement.value = currentPage;
+        selectedPageElement.innerText = 'Selected Page: ' + currentPage;
+
+        // Enable/disable navigation buttons based on page number
+        prevPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = currentPage >= selectElement.options.length;
+
+        updateTable(searchInput.value, db, currentPage, false);
+      }
+
+      // Initialize page on load
+      document.addEventListener('DOMContentLoaded', function () {
+        changePage();
       });

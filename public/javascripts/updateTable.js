@@ -1,4 +1,4 @@
-function updateTable(param, db, page) {
+function updateTable(param, db, page, updatePageNumber = true) {
     const tableBody = document.getElementById('tableBody');
 
     //Get data from db json where a a value contains param
@@ -9,10 +9,11 @@ function updateTable(param, db, page) {
     });
     
     tableBody.innerHTML = ''; // Clear the existing table body content
-    var i = 0;
+    var i = 1;
+    var BreakException = {};
     try {
         data.forEach(result => {
-            if (i > page*100) {
+            if (i > (page-1)*100) {
                 // Create a new row for each search result
                 const row = document.createElement('tr');
                 // Create table cells for each data field
@@ -40,7 +41,7 @@ function updateTable(param, db, page) {
                 row.appendChild(deleteCell);
                 // Add the row to the table body
                 tableBody.appendChild(row);
-                if (i == (page+1)*100) {
+                if (i == page*100) {
                     throw BreakException;
                 }
             }
@@ -49,5 +50,21 @@ function updateTable(param, db, page) {
         } catch (error) {
         //leaving foreach if BreakException
         if (error !== BreakException) throw error;
+        const nbPages = Math.ceil(data.length/100);
+        //update the select pageNumber adding options for the number of pages
+        if (updatePageNumber) {
+            const selectPage = document.getElementById('pageNumber');
+            const selectedPageElement = document.getElementById('selectedPage');
+            selectPage.innerHTML = '';
+            for (let j = 1; j <= nbPages; j++) {
+                const option = document.createElement('option');
+                option.value = j;
+                option.textContent = j;
+                selectPage.appendChild(option);
+            }
+            currentPage = 1;
+            selectedPageElement.innerText = 'Selected Page: 1';
+            selectPage.value = currentPage;
+        }
     }
 };
