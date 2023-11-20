@@ -49,12 +49,16 @@ function updateTable(param, db, page, updatePageNumber = true) {
             });
         } catch (error) {
         //leaving foreach if BreakException
-        if (error !== BreakException) throw error;
-        const nbPages = Math.ceil(data.length/100);
+            if (error !== BreakException) throw error;
+        }
         //update the select pageNumber adding options for the number of pages
         if (updatePageNumber) {
+            console.log("nb pgae update");
+            const nbPages = Math.ceil(data.length/100);
             const selectPage = document.getElementById('pageNumber');
             const selectedPageElement = document.getElementById('selectedPage');
+            var prevPageButton = document.getElementById('prevPage');
+            var nextPageButton = document.getElementById('nextPage');
             selectPage.innerHTML = '';
             for (let j = 1; j <= nbPages; j++) {
                 const option = document.createElement('option');
@@ -65,6 +69,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
             currentPage = 1;
             selectedPageElement.innerText = 'Selected Page: 1';
             selectPage.value = currentPage;
+            prevPageButton.disabled = true;
+            nextPageButton.disabled = nbPages<=1;
         }
-    }
 };
