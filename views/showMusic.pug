@@ -4,11 +4,13 @@ html
     link(rel='stylesheet', href='/stylesheets/table.css')
     script(src="/javascripts/updateTable.js")
     title Music Database
-  body
+  body(onload="updateTable('', db, 1);")
     table
       thead
         tr
-          th(colspan=5)
+          th(colspan=2)
+            input(type="text", name="page", id="page", value="1")
+          th(colspan=3)
             input(type='text', name='search', id='search')
           th
             button#addButton(type='button') Add
@@ -19,15 +21,6 @@ html
           // Generate headers for all columns and add an "Actions" header
 
       tbody#tableBody
-        each row in data
-          tr
-            each column in row
-              td= column
-            td
-                form(action='delete', method='get')
-                    input(type='hidden', name='id', value=row.music_id)
-                    button#deleteButton(type='submit') Delete
-                // Add a "Delete" button for each row
 
     .overlay#addFormContainer
       #addForm
@@ -143,7 +136,14 @@ html
         var new_size = searchValue.length;
         //update after input value > 2
         if (new_size >= 2 || new_size < old_size) {
-          updateTable(searchValue, db);
+          updateTable(searchValue, db, 1);
         }
         old_size = new_size;
+      });
+
+      const pageInput = document.getElementById('page');
+      //add event listener for page input
+      pageInput.addEventListener('input', function() {
+        const pageValue = pageInput.value;
+        updateTable(searchInput.value, db, pageValue);
       });
