@@ -28,4 +28,10 @@ router.post('/', async function(req, res, next) {
     }
 });
 
+router.get('/logout', function(req, res, next) {
+    res.clearCookie('jwt_token');
+    res.render('./');
+    console.log("done");
+});
+
 export default router;
