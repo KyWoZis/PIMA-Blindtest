@@ -23,15 +23,15 @@ tr:nth-child(odd) {
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-size: cover;
-  background-attachment: fixed;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 .container {
@@ -39,6 +39,10 @@ body {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .overlay {
