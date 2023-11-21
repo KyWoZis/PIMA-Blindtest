@@ -65,7 +65,9 @@ export async function deleteMusic(music_id) {
 // Add a music to the playlist of a given user. If the user doesn't have a playlist, create one.
 export async function addMusicToPlaylist(music_id, user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the table name
+        const playlist_id = getterplaylist_id.playlist_id;
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
         await connection.query(`INSERT INTO ? (music_id) VALUES (?)`, [tableName,music_id]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
     } catch (error) {
@@ -158,7 +160,9 @@ export async function getAllPlaylists() {
 // Get the songs of a given playlist
 export async function getSongsFromPlaylist(user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the table name
+        const playlist_id = getterplaylist_id.playlist_id;
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
         const [rows] = await connection.query(`SELECT * FROM ?`, [tableName]);
         return rows;
@@ -170,7 +174,9 @@ export async function getSongsFromPlaylist(user_id, playlistName) {
 // Check if a playlist already exists for a given user
 export async function playlistExists(user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the table name
+        const playlist_id = getterplaylist_id.playlist_id;
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
         const [rows] = await connection.query("SELECT * FROM playlist_list WHERE user_id = ? AND playlist_name = ?", [user_id, playlistName]);
         return rows.length > 0;
