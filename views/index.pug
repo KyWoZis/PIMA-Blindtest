@@ -2,6 +2,14 @@ extends layout
 block head
   title #{title}
 block content
-  h1= title
-  p Welcome to #{title}
-  p.text-6xl oui
+  .container.mx-auto.flex.flex-col.justify-center.align-center
+    a(href='/') Home
+    a(href='/game') Game
+    a(href='/music/database') music database
+    a(href='/music/add') add music to database
+    a(href='/music/delete') delete music to database
+    a(href='/playlist/database') playlist database
+    a(href='/playlist/add') add playlist to database
+    a(href='/playlist/delete') delete playlist to database
+
+
