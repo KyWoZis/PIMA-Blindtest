@@ -10,6 +10,7 @@ html
           each column, index in data[0]
             th= index
           th Actions
+          th Membre playlist
           // Generate headers for all columns and add an "Actions" header
 
       tbody
@@ -22,6 +23,9 @@ html
                     input(type='hidden', name='id', value=row.music_id)
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
+            
+            td 
+              input(type='checkbox', name='addToPlaylist', data-music-id=row.music_id)
         
         tr
         each column in data[0]
@@ -68,8 +72,25 @@ html
         closeFormButton.addEventListener('click', function () {
           addFormContainer.style.display = 'none';
         });
+
+        const addToPlaylistCheckboxes = document.querySelectorAll('input[name="addToPlaylist"]');
+        addToPlaylistCheckboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function () {
+            const musicId = this.getAttribute('data-music-id');
+            if (this.checked) {
+              
+            } else {
+              // Remove the music_id from the list of selected music
+              const index = selectedMusic.indexOf(this.value);
+              if (index > -1) {
+
+              }
+            }
+          });
+        });
       });
 
+      
       const form = document.getElementById('addDataForm');
       const bar = document.getElementById('progress-bar');
 
@@ -130,4 +151,7 @@ html
         };
 
         xhr.send(formData);
+
+
+
       })

@@ -54,10 +54,65 @@ router.get('/editPlaylist', async (req, res) => {
             res.render('addMusic');
             return;
         }
-        res.render('addMusicPlaylist' , {data: allMusic, playlist_id : playlist_id});
+        // Tri des musiques en fonction de la checkbox
+        const sortedMusic = allMusic.sort((a, b) => {
+            // Mettre les musiques cochées en premier
+            const aChecked = songs.some(song => song.music_id === a.music_id);
+            const bChecked = songs.some(song => song.music_id === b.music_id);// res.render('editPlaylist' , {data: allMusic, playlist_id : playlist_id});
+
+            if (aChecked && !bChecked) {
+                return -1;
+            } else if (!aChecked && bChecked) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        // res.render('editPlaylist' , {data: allMusic, playlist_id : playlist_id, user_id : user_id});
+        res.render('editPlaylist', { data: sortedMusic, playlist_id : playlist_id, user_id : user_id});
         return;
+        
     }
-    res.render('editPlaylist', {data: songs});
+    return;
+});
+
+router.get('/addMusicToPlaylist', async (req, res) => {
+    const playlist_id = req.query.playlist_id;
+    const user_id = req.query.user_id;
+    const music_id = req.query.music_id;
+    await addMusicToPlaylist(user_id, playlist_id, music_id);
+    res.redirect('./editPlaylist?playlist_id='+playlist_id+'&user_id='+user_id);
+    return;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const addToPlaylistCheckboxes = document.querySelectorAll('input[data-music-id="addToPlaylist"]');
+  
+    addToPlaylistCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', async function () {
+        const musicId = this.getAttribute('data-music-id');
+        const playlistId = this.getAttribute('data-playlist-id');
+  
+        if (this.checked) {
+          // Appeler la fonction addMusicToPlaylist si la case à cocher est cochée
+          await addMusicToPlaylist(user_id, playlistId, musicId);
+          console.log(`Musique ${musicId} ajoutée à la playlist ${playlistId}`);
+          // Ajoutez ici le code pour l'action lorsque la case est cochée
+        } else {
+            // Appeler la fonction removeMusicFromPlaylist si la case à cocher est décochée
+            await removeMusicFromPlaylist(user_id, playlistId, musicId);
+            console.log(`Musique ${musicId} retirée de la playlist ${playlistId}`);
+            // Ajoutez ici le code pour l'action lorsque la case est décochée
+        }
+      });
+    });
+
+router.get('/removeMusicFromPlaylist', async (req, res) => {
+    const playlist_id = req.query.playlist_id;
+    const user_id = req.query.user_id;
+    const music_id = req.query.music_id;
+    await removeMusicFromPlaylist(user_id, playlist_id, music_id);
+    res.redirect('./editPlaylist?playlist_id='+playlist_id+'&user_id='+user_id);
     return;
 });
 
