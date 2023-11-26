@@ -24,8 +24,9 @@ html
                     button#deleteButton(type='submit') Delete 
                     //- Add an "Delete" button for each row
                 form(action='editPlaylist', method='get')
-                    button#editButton(type='submit') Edit
+                    input(type='hidden', name='user_id', value=row.user_id)
                     input(type='hidden', name='playlist_id', value=row.playlist_id)
+                    button#editButton(type='submit') Edit
                     //- Add an "Edit" button for each row
                   
         

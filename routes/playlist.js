@@ -1,5 +1,5 @@
 import express from 'express';
-import {addMusicToPlaylist, removeMusicFromPlaylist, createPlaylist, removePlaylist, getPlaylists, getAllPlaylists, getSongsFromPlaylist, playlistExists} from '../database.js';
+import {addMusicToPlaylist, getMusic, createPlaylist, removePlaylist, getPlaylists, getAllPlaylists, getSongsFromPlaylist, playlistExists} from '../database.js';
 import { create } from 'domain';
 var router = express.Router();
 
@@ -43,7 +43,21 @@ router.get('/delete', async (req, res) => {
 
 router.get('/editPlaylist', async (req, res) => {
     const playlist_id = req.query.playlist_id;
-    res.render('editPlaylist', {data: playlist_id });
+    const user_id = req.query.user_id;
+    console.log("user_id in p.js: " + user_id)
+    console.log("playlist_id in p.js: " + playlist_id)
+    const songs = await getSongsFromPlaylist(user_id, playlist_id);
+    console.log(songs);
+    if (songs.length === 0) {
+        const allMusic = await getMusic();
+        if (allMusic.length === 0) {
+            res.render('addMusic');
+            return;
+        }
+        res.render('addMusicPlaylist' , {data: allMusic, playlist_id : playlist_id});
+        return;
+    }
+    res.render('editPlaylist', {data: songs});
     return;
 });
 
