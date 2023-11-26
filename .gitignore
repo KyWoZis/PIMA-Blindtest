@@ -4,3 +4,4 @@ upload.sh
 node_modules/
 package-lock.json
 .idea/*
+test.sql
