@@ -76,8 +76,6 @@ html
         const addButton = document.getElementById('addButton');
         const addFormContainer = document.getElementById('addFormContainer');
         const closeFormButton = document.getElementById('closeButton');
-        const editFormContainer = document.getElementById('editFormContainer');
-        const editButton = document.getElementById('editButton');
 
         addButton.addEventListener('click', function () {
           addFormContainer.style.display = 'flex';
@@ -85,12 +83,30 @@ html
 
         closeFormButton.addEventListener('click', function () {
           addFormContainer.style.display = 'none';
-          editFormContainer.style.display = 'none';
         });
+      });
 
-        editButton.addEventListener('click', function (e) {
+      document.addEventListener('click', function (e) {
+        const target = e.target;
+        if (target.id === 'editButton') {
           editFormContainer.style.display = 'flex';
-        });
+          const editDataForm = document.getElementById('editDataForm');
+          const musicId = target.parentElement.parentElement.children[0].innerText;
+          const musicName = target.parentElement.parentElement.children[1].innerText;
+          const artistName = target.parentElement.parentElement.children[2].innerText;
+          const origin = target.parentElement.parentElement.children[3].innerText;
+          const musicType = target.parentElement.parentElement.children[4].innerText;
+
+
+          //Set the default value of the form input
+          editDataForm.children[1].value = musicName;
+          editDataForm.children[4].value = artistName;
+          editDataForm.children[7].value = origin;
+          editDataForm.children[10].value = musicType;
+        }
+        else if (target.id === 'closeButton') {
+          editFormContainer.style.display = 'none';
+        }
       });
 
       const form = document.getElementById('addDataForm');

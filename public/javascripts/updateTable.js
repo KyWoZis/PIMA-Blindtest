@@ -48,6 +48,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     editButton.type = 'button';
                     editButton.textContent = 'Edit';
                     editButton.id = 'editButton';
+                    editButton.value = result.music_id;
                     deleteForm.appendChild(deleteInput);
                     deleteForm.appendChild(deleteButton);
                     deleteCell.appendChild(deleteForm);

@@ -56,19 +56,19 @@ body {
     align-items: center;
 }
 
-#addForm {
+#addForm, #editForm {
     background: white;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
 }
 
-#addForm label {
+#addForm label, #editForm label {
   display: block;
   margin-bottom: 10px; /* Separation between labels */
 }
 
-#addForm input {
+#addForm input, #editForm input {
   width: 100%; /* Make the inputs fill the entire width of the form */
   padding: 10px;
   margin-bottom: 15px; /* Separation between input fields */
@@ -77,7 +77,7 @@ body {
   box-sizing: border-box;
 }
 
-#addForm button[type="submit"] {
+#addForm button[type="submit"], #editForm button[type="submit"] {
   background-color: #007bff;
   color: #fff;
   border: none;
