@@ -178,11 +178,15 @@ html
 
       const searchInput = document.getElementById('search');
       //add event listener to search button
-      var old_size = 0;
+      var t1 = Date.now();
 
       searchInput.addEventListener('input', function() {
+        var t2 = Date.now();
         const searchValue = searchInput.value;
-        updateTable(searchValue, db, 1);
+        if (t2 - t1 > 500) {
+          updateTable(searchValue, db, 1);
+          t1 = t2;
+        }
       });
 
       var currentPage = 1;
