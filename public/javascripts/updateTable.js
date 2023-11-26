@@ -44,9 +44,14 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     deleteButton.type = 'submit';
                     deleteButton.textContent = 'Delete';
                     deleteButton.id = 'deleteButton';
+                    const editButton = document.createElement('button');
+                    editButton.type = 'button';
+                    editButton.textContent = 'Edit';
+                    editButton.id = 'editButton';
                     deleteForm.appendChild(deleteInput);
                     deleteForm.appendChild(deleteButton);
                     deleteCell.appendChild(deleteForm);
+                    deleteCell.appendChild(editButton);
                     row.appendChild(deleteCell);
                     // Add the row to the table body
                     tableBody.appendChild(row);

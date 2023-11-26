@@ -52,11 +52,32 @@ html
           label(for='progress-bar')
           progress#progress-bar(value='0', max='100')
         button#closeButton(type='button') Close
+    .overlay#editFormContainer
+      #editForm
+        h2 Edit Data
+        form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          label(for='musicName') Music Name
+          input(type='text', name='music_name', id='musicName', required)
+          br
+          label(for='artistName') Artist Name
+          input(type='text', name='artist_name', id='artistName', required)
+          br
+          label(for='origin') Origin
+          input(type='text', name='origin', id='origin')
+          br
+          label(for='musicType') Music Type
+          input(type='text', name='music_type', id='musicType')
+          br
+          button(type='submit') Upload
+        button#closeButton(type='button') Close
     script.
       document.addEventListener('DOMContentLoaded', function () {
         const addButton = document.getElementById('addButton');
         const addFormContainer = document.getElementById('addFormContainer');
         const closeFormButton = document.getElementById('closeButton');
+        const editFormContainer = document.getElementById('editFormContainer');
+        const editButton = document.getElementById('editButton');
 
         addButton.addEventListener('click', function () {
           addFormContainer.style.display = 'flex';
@@ -64,6 +85,11 @@ html
 
         closeFormButton.addEventListener('click', function () {
           addFormContainer.style.display = 'none';
+          editFormContainer.style.display = 'none';
+        });
+
+        editButton.addEventListener('click', function (e) {
+          editFormContainer.style.display = 'flex';
         });
       });
 
