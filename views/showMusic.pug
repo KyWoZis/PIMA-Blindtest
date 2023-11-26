@@ -57,6 +57,7 @@ html
         h2 Edit Data
         form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
           // Input fields for adding data
+          input(type='hidden', name='music_id', id='musicId')
           label(for='musicName') Music Name
           input(type='text', name='music_name', id='musicName', required)
           br
@@ -69,7 +70,7 @@ html
           label(for='musicType') Music Type
           input(type='text', name='music_type', id='musicType')
           br
-          button(type='submit') Upload
+          button(type='submit') Update
         button#closeButton(type='button') Close
     script.
       document.addEventListener('DOMContentLoaded', function () {
@@ -99,10 +100,11 @@ html
 
 
           //Set the default value of the form input
-          editDataForm.children[1].value = musicName;
-          editDataForm.children[4].value = artistName;
-          editDataForm.children[7].value = origin;
-          editDataForm.children[10].value = musicType;
+          editDataForm.children[0].value = musicId;
+          editDataForm.children[2].value = musicName;
+          editDataForm.children[5].value = artistName;
+          editDataForm.children[8].value = origin;
+          editDataForm.children[11].value = musicType;
         }
         else if (target.id === 'closeButton') {
           editFormContainer.style.display = 'none';

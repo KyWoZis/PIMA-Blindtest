@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs';
-import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
+import {getMusic, addMusic, musicExists, deleteMusic, updateMusic} from '../database.js';
 var router = express.Router();
 
 router.get('/database', async (req, res) => {
@@ -57,6 +57,13 @@ router.get('/delete', async (req, res) => {
     fs.unlink("./public/videos/"+id+".mp4", function(err) {
         if ( err ) console.log('ERROR: ' + err);
     });
+    res.redirect('./database');
+    return;
+});
+
+router.post('/edit', async (req, res) => {
+    const {music_id, music_name, artist_name, origin, music_type} = req.body;
+    await updateMusic(music_id, music_name, artist_name, origin, music_type);
     res.redirect('./database');
     return;
 });
