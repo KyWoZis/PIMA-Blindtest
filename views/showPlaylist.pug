@@ -21,7 +21,12 @@ block content
                   input(type='hidden', name='playlist_id', value=row.playlist_id)
                   button#deleteButton(type='submit') Delete
                   //- Add an "Delete" button for each row
-                  //- button#editButton(type='button') Edit
+                  //- button#editButton(type='button') Edit playlist
+
+              form(action='editPlaylist', method='get')
+                  input(type='hidden', name='user_id', value=row.user_id)
+                  input(type='hidden', name='playlist_id', value=row.playlist_id)
+                  button#editButton(type='submit') Edit
                   //- Add an "Edit" button for each row
 
 
@@ -45,39 +50,39 @@ block content
         button(type='submit') Upload
       button#closeButton(type='button') Close
 
-  .overlay#editFormContainer
-    #editForm
-      h2 Edit Data
-      form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
-        // Input fields for editing data
-        label(for='user_id') User ID
-        input(type='text', name='user_id', id='user_id', required)
-      button#closeEditButton(type='button') Close
+  //- .overlay#editFormContainer
+  //-   #editForm
+  //-     h2 Edit Data
+  //-     form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
+  //-       // Input fields for editing data
+  //-       label(for='user_id') User ID
+  //-       input(type='text', name='user_id', id='user_id', required)
+  //-     button#closeEditButton(type='button') Close
 
 
   script.
     document.addEventListener('DOMContentLoaded', function () {
       const addButton = document.getElementById('addButton');
       const addFormContainer = document.getElementById('addFormContainer');
-      const closeFormButton = document.getElementById('closeButton');
+      //- const closeFormButton = document.getElementById('closeButton');
 
       addButton.addEventListener('click', function () {
         addFormContainer.style.display = 'flex';
       });
 
-      closeFormButton.addEventListener('click', function () {
-        addFormContainer.style.display = 'none';
-      });
+      //- closeFormButton.addEventListener('click', function () {
+      //-   addFormContainer.style.display = 'none';
+      //- });
 
       const editButton = document.getElementById('editButton');
-      const editFormContainer = document.getElementById('editFormContainer');
-      const closeEditFormButton = document.getElementById('closeEditButton');
+      //- const editFormContainer = document.getElementById('editFormContainer');
+      //- const closeEditFormButton = document.getElementById('closeEditButton');
 
-      editButton.addEventListener('click', function () {
-        editFormContainer.style.display = 'flex';
-      });
+      //- editButton.addEventListener('click', function () {
+      //-   editFormContainer.style.display = 'flex';
+      //- });
 
-      closeEditFormButton.addEventListener('click', function () {
-        editFormContainer.style.display = 'none';
-    });
+    //-   closeEditFormButton.addEventListener('click', function () {
+    //-     editFormContainer.style.display = 'none';
+    //- });
     });
