@@ -1,5 +1,5 @@
 import express from 'express';
-import {addMusicToPlaylist, getMusic, createPlaylist, removePlaylist, getPlaylists, getAllPlaylists, getSongsFromPlaylist, playlistExists} from '../database.js';
+import {addMusicToPlaylist,removeMusicFromPlaylist, getMusic, createPlaylist, removePlaylist, getPlaylists, getAllPlaylists, getSongsFromPlaylist, playlistExists} from '../database.js';
 import { create } from 'domain';
 var router = express.Router();
 

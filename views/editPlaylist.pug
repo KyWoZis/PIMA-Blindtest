@@ -24,8 +24,11 @@ html
                     button#deleteButton(type='submit') Delete
                 // Add a "Delete" button for each row
             
-            td 
-              input(type='checkbox', name='addToPlaylist', data-music-id=row.music_id)
+            td
+              //remove from playlist
+              a(href=`removeMusicFromPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Remove from playlist
+              a.text-4xl.border.p-5.rounded.border-black(href=`addMusicToPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Add to playlist
+              //input(type='checkbox', name='addToPlaylist', data-music-id=row.music_id)
         
         tr
         each column in data[0]
@@ -78,8 +81,8 @@ html
           checkbox.addEventListener('change', function () {
             const musicId = this.getAttribute('data-music-id');
             if (this.checked) {
-              a(href=`/add-to-playlist?id=${musicId}`) Add to playlist
-              
+              window.location.replace(`/add-to-playlist?id=${musicId}&user_id=${user_id}&playlist_id=${playlist_id}`);
+              console.log();
             } else {
               // Remove the music_id from the list of selected music
               const index = selectedMusic.indexOf(this.value);
