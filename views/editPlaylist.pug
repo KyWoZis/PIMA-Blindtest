@@ -1,9 +1,8 @@
-doctype html
-html
-  head
-    link(rel='stylesheet', href='/stylesheets/table.css')
-    title Music Database
-  body
+extends layout
+block head
+  link(rel='stylesheet', href='/stylesheets/table.css')
+  title Music Database
+block content
     table
       thead
         tr
@@ -26,8 +25,8 @@ html
             
             td
               //remove from playlist
-              a(href=`removeMusicFromPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Remove from playlist
-              a.text-4xl.border.p-5.rounded.border-black(href=`addMusicToPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Add to playlist
+              a.text-xl.border.p-2.rounded.border-black.mr-5(class="hover:bg-gray-400", href=`removeMusicFromPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Remove from playlist
+              a.text-xl.border.p-2.rounded.border-black(class="hover:bg-gray-400", href=`addMusicToPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Add to playlist
               //input(type='checkbox', name='addToPlaylist', data-music-id=row.music_id)
         
         tr
