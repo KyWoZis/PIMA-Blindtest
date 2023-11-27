@@ -1,7 +1,12 @@
-doctype html
+//doctype html a enlever quand l'ui de tous les sites seront a faire
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/table.css')
+    link(rel='stylesheet', href='/styles/style.css')
+    block head
   body
-    block content
+    nav.top-0.fixed.flex.flex-row.justify-center.align-center.w-full.z-20
+      a.container.mx-auto.border.border-blue-500.text-4xl.font-bold.text-blue-500(class="hover:bg-blue-200")(href="/").
+          Home
+    .flex.container.mx-auto.justify-center.align-center.h-full
+      block content

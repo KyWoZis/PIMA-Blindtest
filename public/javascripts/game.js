@@ -11,12 +11,13 @@ const videoList = [
 
 // Création d'une liste de noms associés aux vidéos
 const nameList = [
-    "Lain",
+    "Souso no Frieren",
     "Usseewa",
     "One Piece",
+
 ]; // same 
 
-delay = 2000;
+delay = 20000;
 index = 0;
 score = 0;
 

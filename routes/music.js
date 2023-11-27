@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs';
-import {getMusic, addMusic, musicExists, deleteMusic} from '../database.js';
+import {getMusic, addMusic, musicExists, deleteMusic, updateMusic} from '../database.js';
 var router = express.Router();
 
 router.get('/database', async (req, res) => {
@@ -61,9 +61,11 @@ router.get('/delete', async (req, res) => {
     return;
 });
 
-router.get('/getDatabase', async (req, res) => {
-    const [music] = await getMusic();
-    return music;
+router.post('/edit', async (req, res) => {
+    const {music_id, music_name, artist_name, origin, music_type} = req.body;
+    await updateMusic(music_id, music_name, artist_name, origin, music_type);
+    res.redirect('./database');
+    return;
 });
 
 export default router;

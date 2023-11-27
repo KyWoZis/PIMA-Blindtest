@@ -1,9 +1,8 @@
-html
-  head
-    link(rel='stylesheet', href='/stylesheets/table.css')
+extends layout
+block head
     title Music Database Add
 block content
-    #addform 
+    #addform
       form#addDataForm()
           // Input fields for adding data
           label(for='musicName') Music Name
