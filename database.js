@@ -80,6 +80,17 @@ export async function isSongInPlaylist(music_id, user_id, playlistName) {
     }
 }
 
+// Check if a song is already in a playlist
+export async function isSongInPlaylistID(music_id, user_id, playlist_id) {
+    try {
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+        const [rows] = await connection.query(`SELECT * FROM ${tableName} WHERE music_id = ?`, [music_id]);
+        return rows.length > 0;
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
 // Add a music to the playlist of a given user. If the user doesn't have a playlist, create one.
 export async function addMusicToPlaylist(music_id, user_id, playlistName) {
     try {
@@ -101,8 +112,7 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
 export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
     try {
         const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
-        const playlistName = await getPlaylistName(user_id, playlist_id);
-        const isSongPlaylist = await isSongInPlaylist(music_id, user_id, playlistName); // Check if the song is already in the playlist
+        const isSongPlaylist = await isSongInPlaylistID(music_id, user_id, playlist_id); // Check if the song is already in the playlist
         if (!isSongPlaylist) {
         await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id,1]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
