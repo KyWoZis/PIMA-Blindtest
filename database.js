@@ -65,10 +65,10 @@ export async function deleteMusic(music_id) {
 // Add a music to the playlist of a given user. If the user doesn't have a playlist, create one.
 export async function addMusicToPlaylist(music_id, user_id, playlistName) {
     try {
-        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id
-        const playlist_id = getterplaylist_id.playlist_id;
-        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
-        await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); // Add the music to the playlist
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id object
+        const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
+        const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); / Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
@@ -76,7 +76,7 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
 }
 export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
     try {
-        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+        const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
         await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id,1]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
     } catch (error) {
@@ -87,7 +87,6 @@ export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
 // Get the id of a playlist, given the user_id and the playlist name
 export async function getPlaylistId(user_id, playlistName) {
     try {
-        console.log("entered getPlaylistId")
         return await connection.query(`SELECT playlist_id FROM playlist_list WHERE user_id = ? AND playlist_name = ?`, [user_id, playlistName]);  
     } catch (error) {
         console.error('An error occurred:', error);
@@ -97,7 +96,7 @@ export async function getPlaylistId(user_id, playlistName) {
 export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
     try {
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id
-        const playlist_id = getterplaylist_id.playlist_id;
+        const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
         await connection.query(`DELETE FROM ${tableName} WHERE music_id = ?`, [music_id]); // Remove the music from the playlist
@@ -120,7 +119,7 @@ export async function removeMusicFromPlaylistID(user_id, playlist_id, music_id) 
 // Insert a playlist to the playlists table
 export async function insertPlaylistToList(user_id, playlistName) {
     try {
-        const escapedPlaylistName = connection.escape(playlistName); // 
+        const escapedPlaylistName = connection.escape(playlistName); // Escape the playlist name to avoid SQL injections
         await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, escapedPlaylistName]);
         console.log('The playlist has been added to the playlists table successfully.');
     } catch (error) {
@@ -182,9 +181,7 @@ export async function getAllPlaylists() {
 // Get the songs of a given playlist
 export async function getSongsFromPlaylist(user_id, playlist_id) {
     try {
-        console.log("entered getSongsFromPlaylist")
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
-        console.log("tableName: " + tableName)
 
         const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
         return rows;

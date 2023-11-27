@@ -14,6 +14,8 @@ import {
 import { create } from 'domain';
 var router = express.Router();
 
+
+//Show the database
 router.get('/database', async (req, res) => {
     const allPlaylists = await getAllPlaylists();
     if (allPlaylists.length === 0) {
@@ -24,11 +26,13 @@ router.get('/database', async (req, res) => {
     return;
 });
 
+//page to add a playlist
 router.get('/add', function(req, res, next) {
     res.render('createPlaylist', {title: "Add a playlist"});
     return;
 });
 
+//add a playlist
 router.post('/add', async (req, res) => {
     const {user_id, playlistName} = req.body;
 
@@ -44,6 +48,7 @@ router.post('/add', async (req, res) => {
     return;
 });
 
+//delete a playlist
 router.get('/delete', async (req, res) => {
     const user_id = req.query.user_id;
     const playlist_id = req.query.playlist_id;
@@ -52,15 +57,11 @@ router.get('/delete', async (req, res) => {
     return;
 });
 
+//edit a given playlist
 router.get('/editPlaylist', async (req, res) => {
     const playlist_id = req.query.playlist_id;
     const user_id = req.query.user_id;
-    //console.log("user_id in p.js: " + user_id)
-    //console.log("playlist_id in p.js: " + playlist_id)
     const songs = await getSongsFromPlaylist(user_id, playlist_id);
-    //sconsole.log(songs);
-    console.log(songs);
-    //console.log(songs);
     const allMusic = await getMusic();
     console.log(allMusic);
     if (allMusic.length === 0) {
@@ -85,22 +86,19 @@ router.get('/editPlaylist', async (req, res) => {
     // res.render('editPlaylist' , {data: allMusic, playlist_id : playlist_id, user_id : user_id});
     res.render('editPlaylist', { data: sortedMusic, playlist_id : playlist_id, user_id : user_id});
     return;
-
-    return;
 });
 
+//add a music to a playlist
 router.get('/addMusicToPlaylist', async (req, res) => {
     const playlist_id = req.query.playlist_id;
     const user_id = req.query.user_id;
     const music_id = req.query.music_id;
-    console.log("nooowwww");
     await addMusicToPlaylistID(user_id, playlist_id, music_id);
-    console.log("or never ?");
     res.redirect('./editPlaylist?playlist_id='+playlist_id+'&user_id='+user_id);
     return;
 });
 
-
+//remove a music from a playlist
 router.get('/removeMusicFromPlaylist', async (req, res) => {
     const playlist_id = req.query.playlist_id;
     const user_id = req.query.user_id;
