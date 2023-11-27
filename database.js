@@ -68,7 +68,7 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id object
         const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
         const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
-        await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); / Add the music to the playlist
+        await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
