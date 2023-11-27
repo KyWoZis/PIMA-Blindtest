@@ -631,14 +631,20 @@ video {
 .mb-4 {
   margin-bottom: 1rem;
 }
+.mb-40 {
+  margin-bottom: 10rem;
+}
 .mt-2 {
   margin-top: 0.5rem;
 }
 .mt-40 {
   margin-top: 10rem;
 }
-.mb-40 {
-  margin-bottom: 10rem;
+.mt-60 {
+  margin-top: 15rem;
+}
+.mt-80 {
+  margin-top: 20rem;
 }
 .box-border {
   box-sizing: border-box;
@@ -1491,10 +1497,6 @@ video {
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
-}
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 .decoration-slice {
   -webkit-box-decoration-break: slice;
