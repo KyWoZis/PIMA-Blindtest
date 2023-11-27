@@ -63,7 +63,6 @@ router.get('/editPlaylist', async (req, res) => {
     const user_id = req.query.user_id;
     const songs = await getSongsFromPlaylist(user_id, playlist_id);
     const allMusic = await getMusic();
-    console.log(allMusic);
     if (allMusic.length === 0) {
         res.render('addMusic');
         return;
