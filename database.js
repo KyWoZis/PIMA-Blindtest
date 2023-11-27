@@ -124,7 +124,7 @@ export async function removeMusicFromPlaylistID(user_id, playlist_id, music_id) 
 export async function insertPlaylistToList(user_id, playlistName) {
     try {
         const escapedPlaylistName = connection.escape(playlistName); // Escape the playlist name to avoid SQL injections
-        await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, escapedPlaylistName]);
+        await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, playlistName]);
         console.log('The playlist has been added to the playlists table successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
@@ -134,9 +134,11 @@ export async function insertPlaylistToList(user_id, playlistName) {
 // Create a playlist for a given user, and adds it to the playlist_list table
 export async function createPlaylist(user_id, playlistName) {
     try {
+        console.log("entering createPlaylist")
         await insertPlaylistToList(user_id, playlistName);
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the table name
         const playlist_id = getterplaylist_id.playlist_id;
+        console.log(playlist_id)
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
         await connection.query(`CREATE TABLE ${tableName} (music_id int NOT NULL, order_to_play int NOT NULL, FOREIGN KEY (music_id) REFERENCES music(music_id))`); // Create the playlist
         console.log('The playlist has been created successfully.');
