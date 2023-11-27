@@ -78,6 +78,7 @@ html
           checkbox.addEventListener('change', function () {
             const musicId = this.getAttribute('data-music-id');
             if (this.checked) {
+              a(href=`/add-to-playlist?id=${musicId}`) Add to playlist
               
             } else {
               // Remove the music_id from the list of selected music

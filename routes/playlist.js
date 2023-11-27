@@ -85,27 +85,6 @@ router.get('/addMusicToPlaylist', async (req, res) => {
     return;
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addToPlaylistCheckboxes = document.querySelectorAll('input[data-music-id="addToPlaylist"]');
-  
-    addToPlaylistCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', async function () {
-        const musicId = this.getAttribute('data-music-id');
-        const playlistId = this.getAttribute('data-playlist-id');
-  
-        if (this.checked) {
-          // Appeler la fonction addMusicToPlaylist si la case à cocher est cochée
-          await addMusicToPlaylist(user_id, playlistId, musicId);
-          console.log(`Musique ${musicId} ajoutée à la playlist ${playlistId}`);
-          // Ajoutez ici le code pour l'action lorsque la case est cochée
-        } else {
-            // Appeler la fonction removeMusicFromPlaylist si la case à cocher est décochée
-            await removeMusicFromPlaylist(user_id, playlistId, musicId);
-            console.log(`Musique ${musicId} retirée de la playlist ${playlistId}`);
-            // Ajoutez ici le code pour l'action lorsque la case est décochée
-        }
-      });
-    });
 
 router.get('/removeMusicFromPlaylist', async (req, res) => {
     const playlist_id = req.query.playlist_id;
