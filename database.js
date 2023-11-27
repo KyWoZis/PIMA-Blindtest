@@ -72,8 +72,14 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id object
         const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
         const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        const isSongInPlaylist = await isSongInPlaylist(music_id, user_id, playlistName); // Check if the song is already in the playlist
+        if (!isSongInPlaylist) {
         await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
+        }
+        else {
+            console.log('The music is already in the playlist.');
+        }
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -81,8 +87,14 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
 export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
     try {
         const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        const isSongInPlaylist = await isSongInPlaylist(music_id, user_id, playlist_id); // Check if the song is already in the playlist
+        if (!isSongInPlaylist) {
         await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id,1]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
+        }
+        else {
+            console.log('The music is already in the playlist.');
+        }
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -91,7 +103,7 @@ export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
 
 
 // Check if a song is already in a playlist
-export async function songIsInPlaylist(music_id, user_id, playlistName) {
+export async function isSongInPlaylist(music_id, user_id, playlistName) {
     try {
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id
         const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
@@ -102,6 +114,7 @@ export async function songIsInPlaylist(music_id, user_id, playlistName) {
         console.error('An error occurred:', error);
     }
 }
+
 // Get the id of a playlist, given the user_id and the playlist name
 export async function getPlaylistId(user_id, playlistName) {
     try {
