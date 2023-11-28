@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="80e28350-9687-4331-a34a-28354915a861" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/database.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/javascripts/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/game.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/game.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,9 +50,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "LaunchGame",
+    "git-widget-placeholder": "AdminPage",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/super/OneDrive/Documents/GitHub/PIMA-Blindtest",
+    "last_opened_file_path": "C:/Users/super/OneDrive/Documents/GitHub/PIMA-Blindtest/views",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -62,6 +62,12 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\super\OneDrive\Documents\GitHub\PIMA-Blindtest\views" />
+      <recent name="C:\Users\super\OneDrive\Documents\GitHub\PIMA-Blindtest\routes" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.devstart">
     <configuration name="devstart" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />

@@ -47,6 +47,14 @@ export async function checkUser(username, password) {
     return false;
 }
 
+export async function checkAdmin(username) {
+    const [rows] = await connection.query("SELECT is_admin FROM users WHERE username = ?", [username]);
+    if (rows.length === 0) {
+        return false;
+    }
+    return rows[0].is_admin;
+}
+
 export async function createUser(username, password) {
     try{
         const saltRounds = 10;

@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 const __dirname = path.resolve();
 
 import indexRouter from './routes/index.js';
+import adminRouter from './routes/admin.js';
 import usersRouter from './routes/users.js';
 import musicRouter from './routes/music.js';
 import playlistRouter from './routes/playlist.js';
@@ -30,6 +31,7 @@ app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 app.use('/music', musicRouter);
 app.use('/playlist', playlistRouter);
 app.use('/login', loginRouter);
