@@ -4,13 +4,21 @@ block head
 block content
   .container.flex-col
     .container.text-blue-500.text-4xl.font-bold
-      div Bonjour et bienvenue sur le site de Blindtest !
+      div Bonjour et bienvenue sur le site de Blindtest #{username} !
     .container.mx-auto.grid.grid-cols-2
       //if connected then you can show it else big button to connect
-      a.border-2.border-red-900.p-10.rounded-lg.mx-5.font-bold.text-4xl.text-red-300(class="hover:bg-red-200")(href='/game?user_id=1&playlist_id=3') Game
-      a.border-2.border-red-900.p-10.rounded-lg.mx-5.font-bold.text-4xl.text-red-300(class="hover:bg-red-200")(href='/admin') Admin
+      if is_ad
+        a.border-2.border-red-900.p-10.rounded-lg.mx-5.font-bold.text-4xl.text-red-300(class="hover:bg-red-200")(href='/game?user_id=1&playlist_id=3') Game
+        a.border-2.border-red-900.p-10.rounded-lg.mx-5.font-bold.text-4xl.text-red-300(class="hover:bg-red-200")(href='/admin') Admin
+      else
+        a.border-2.border-red-900.p-10.rounded-lg.mx-5.font-bold.text-4xl.text-red-300.col-span-2(class="hover:bg-red-200")(href='/game?user_id=1&playlist_id=3') Game
 
 
-    .container.mx-auto.grid.grid-cols-2.justify-center.align-center
-      a.border-2.border-red-900.p-5.pt-2.pb-2.rounded-lg.mx-5(href="/login")(class="hover:bg-red-200") Se Connecter !
-      a.border-2.border-red-900.p-5.pt-2.pb-2.rounded-lg.mx-5(href="/register")(class="hover:bg-red-200") S'inscrire !
+
+    if username
+      .container.mx-auto.grid.grid-cols-1.justify-center.align-center
+        a.border-2.border-red-900.p-5.pt-2.pb-2.rounded-lg.mx-5(href="/login/logout")(class="hover:bg-red-200") Se Déconnecter !
+    else
+      .container.mx-auto.grid.grid-cols-2.justify-center.align-center
+        a.border-2.border-red-900.p-5.pt-2.pb-2.rounded-lg.mx-5(href="/login")(class="hover:bg-red-200") Se Connecter !
+        a.border-2.border-red-900.p-5.pt-2.pb-2.rounded-lg.mx-5(href="/register")(class="hover:bg-red-200") S'inscrire !

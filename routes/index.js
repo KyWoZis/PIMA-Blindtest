@@ -1,16 +1,17 @@
 import express from 'express';
-import {getSongsFromPlaylist, getInfoMusic} from "../database.js";
+import {getSongsFromPlaylist, getInfoMusic, checkAdmin} from "../database.js";
 var router = express.Router();
 import dotenv from 'dotenv';
 dotenv.config();
 var JWT_SECRET = process.env.JWT_SECRET;
 import jsonwebtoken from 'jsonwebtoken';
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function (req, res, next) {
   if (req.cookies.jwt_token) {
     var user = jsonwebtoken.verify(req.cookies.jwt_token, JWT_SECRET);
+    var is_ad = await checkAdmin(user.username);
   }
-  res.render('index', { title: 'BlindTest Project'});
+  res.render('index', {title: 'BlindTest Project', is_ad: is_ad, username: user ? user.username : null});
   return;
 });
 
