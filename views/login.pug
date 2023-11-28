@@ -1,20 +1,15 @@
+extends layout
+block head
+  title Login page
+block content
+  form.border-black.border-2.grid.grid-cols-2.p-5.gap-2(action='/login', method='POST')
+    label.border-2.border-blue-500.rounded-xl(for='username') Username:
+    input.bg-gray-100.rounded-lg.border-2.border-gray-300(type='text', id='username', name='username')
 
-html
-  head
-    title Login Page
-    link(rel='stylesheet', href='/stylesheets/login.css')
+    label.border-2.border-blue-500.rounded-xl(for='password') Password:
+    input.bg-gray-100.rounded-lg.border-2.border-gray-300(type='password', id='password', name='password')
 
-  body
-    h1 Login Page
+    input.col-span-2.border-2.border-blue-500.rounded-xl(type='submit', value='Login', class="hover:bg-blue-200")
 
-    form(action='/login', method='POST')
-      label(for='username') Username:
-      input(type='text', id='username', name='username')
-
-      label(for='password') Password:
-      input(type='password', id='password', name='password')
-
-      input(type='submit', value='Login')
-
-    form(action='/login/logout', method='get')
-      button(type='submit') Logout
+  //form(action='/login/logout', method='get')
+    button(type='submit') Logout
