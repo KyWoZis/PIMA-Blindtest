@@ -1,13 +1,29 @@
+.tableContainer {
+  overflow: auto;
+  height: 80vh;
+  width: 90vw;
+  margin-top: 100px;
+}
+
 table {
   border-collapse: collapse;
-  display: inline-table;
-  width: 80%;
+  width: 100%;
+}
+
+thead {
+  top: 0;
+  position: sticky;
+}
+
+tbody {
+  height: calc(100% - 30px);
+  overflow-y: auto;
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 th {
@@ -28,10 +44,11 @@ body {
   background-attachment: fixed;
   margin: 0;
   padding: 0;
+  margin-top: 1%;
+  margin-bottom: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .container {
@@ -39,6 +56,10 @@ body {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .overlay {
@@ -53,19 +74,19 @@ body {
     align-items: center;
 }
 
-#addForm {
+#addForm, #editForm {
     background: white;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
 }
 
-#addForm label {
+#addForm label, #editForm label {
   display: block;
   margin-bottom: 10px; /* Separation between labels */
 }
 
-#addForm input {
+#addForm input, #editForm input {
   width: 100%; /* Make the inputs fill the entire width of the form */
   padding: 10px;
   margin-bottom: 15px; /* Separation between input fields */
@@ -74,7 +95,7 @@ body {
   box-sizing: border-box;
 }
 
-#addForm button[type="submit"] {
+#addForm button[type="submit"], #editForm button[type="submit"] {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -123,11 +144,42 @@ tbody td:last-child {
   vertical-align: middle;
 }
 
-tbody tr:last-child td {
-  border: none;
-  background-color: white;
-}
-
 #progress-bar {
   display: none;
+}
+
+#prevPage, #nextPage {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#prevPage:disabled, #nextPage:disabled {
+  background-color: #ccc;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+/*styling for the page number selector #pageNumber*/
+#pageNumber {
+  background-color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/*styling for the edit button #editButton*/
+#editButton {
+  background-color: #ffffff;
+  border: solid 1px #000000;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }

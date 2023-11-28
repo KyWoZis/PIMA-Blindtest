@@ -1,34 +1,30 @@
-doctype html
-html
-  head
-    link(rel='stylesheet', href='/stylesheets/table.css')
-    title Music Database
-  body
-    table
-      thead
-        tr
-          each column, index in data[0]
-            th= index
-          th Actions
-          // Generate headers for all columns and add an "Actions" header
-
-      tbody
-        each row in data
+extends layout
+block head
+  title Music Database
+  script(src="/javascripts/updateTable.js")
+block content
+  body(onload="updateTable('', db, 1);")
+    .div.tableContainer
+      table
+        thead
           tr
-            each column in row
-              td= column
-            td
-                form(action='delete', method='get')
-                    input(type='hidden', name='id', value=row.music_id)
-                    button#deleteButton(type='submit') Delete
-                // Add a "Delete" button for each row
-        
-        tr
-        each column in data[0]
-          td
-        td
-          button#addButton(type='button') Add
-    // Add an "Add" button row
+            th(colspan=2)
+              button#prevPage(onclick='changePage(-1)') &lt; Prev
+              select#pageNumber(onchange='changePage()', value='1')
+              button#nextPage(onclick='changePage(1)') Next &gt;
+
+              p(id='selectedPage') Selected Page: 1
+            th(colspan=3)
+              input(type='text', name='search', id='search')
+            th
+              button#addButton(type='button') Add
+          tr
+            each column, index in data[0]
+              th= index
+            th Actions
+            // Generate headers for all columns and add an "Actions" header
+
+        tbody#tableBody
 
     .overlay#addFormContainer
       #addForm
@@ -55,6 +51,26 @@ html
           label(for='progress-bar')
           progress#progress-bar(value='0', max='100')
         button#closeButton(type='button') Close
+    .overlay#editFormContainer
+      #editForm
+        h2 Edit Data
+        form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          input(type='hidden', name='music_id', id='musicId')
+          label(for='musicName') Music Name
+          input(type='text', name='music_name', id='musicName', required)
+          br
+          label(for='artistName') Artist Name
+          input(type='text', name='artist_name', id='artistName', required)
+          br
+          label(for='origin') Origin
+          input(type='text', name='origin', id='origin')
+          br
+          label(for='musicType') Music Type
+          input(type='text', name='music_type', id='musicType')
+          br
+          button(type='submit') Update
+        button#closeButton(type='button') Close
     script.
       document.addEventListener('DOMContentLoaded', function () {
         const addButton = document.getElementById('addButton');
@@ -70,6 +86,30 @@ html
         });
       });
 
+      document.addEventListener('click', function (e) {
+        const target = e.target;
+        if (target.id === 'editButton') {
+          editFormContainer.style.display = 'flex';
+          const editDataForm = document.getElementById('editDataForm');
+          const musicId = target.parentElement.parentElement.children[0].innerText;
+          const musicName = target.parentElement.parentElement.children[1].innerText;
+          const artistName = target.parentElement.parentElement.children[2].innerText;
+          const origin = target.parentElement.parentElement.children[3].innerText;
+          const musicType = target.parentElement.parentElement.children[4].innerText;
+
+
+          //Set the default value of the form input
+          editDataForm.children[0].value = musicId;
+          editDataForm.children[2].value = musicName;
+          editDataForm.children[5].value = artistName;
+          editDataForm.children[8].value = origin;
+          editDataForm.children[11].value = musicType;
+        }
+        else if (target.id === 'closeButton') {
+          editFormContainer.style.display = 'none';
+        }
+      });
+
       const form = document.getElementById('addDataForm');
       const bar = document.getElementById('progress-bar');
 
@@ -83,7 +123,7 @@ html
         formData.append('artist_name', document.getElementById('artistName').value);
         formData.append('origin', document.getElementById('origin').value);
         formData.append('music_type', document.getElementById('musicType').value);
-        
+
         const xhr = new XMLHttpRequest();
 
         xhr.open('POST', 'add', true);
@@ -131,3 +171,45 @@ html
 
         xhr.send(formData);
       })
+
+      //load db with data from html
+      const db = !{JSON.stringify(data)};
+
+      const searchInput = document.getElementById('search');
+      //add event listener to search button
+      var t1 = Date.now();
+
+      searchInput.addEventListener('input', function() {
+        var t2 = Date.now();
+        const searchValue = searchInput.value;
+        if (t2 - t1 > 500) {
+          updateTable(searchValue, db, 1);
+          t1 = t2;
+        }
+      });
+
+      var currentPage = 1;
+
+      function changePage(offset = 0) {
+        var selectElement = document.getElementById('pageNumber');
+        var selectedPageElement = document.getElementById('selectedPage');
+        var prevPageButton = document.getElementById('prevPage');
+        var nextPageButton = document.getElementById('nextPage');
+
+        currentPage = parseInt(selectElement.value) + offset;
+
+        // Update selected page
+        selectElement.value = currentPage;
+        selectedPageElement.innerText = 'Selected Page: ' + currentPage;
+
+        // Enable/disable navigation buttons based on page number
+        prevPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = currentPage >= selectElement.options.length;
+
+        updateTable(searchInput.value, db, currentPage, false);
+      }
+
+      // Initialize page on load
+      document.addEventListener('DOMContentLoaded', function () {
+        changePage();
+      });

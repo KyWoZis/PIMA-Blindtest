@@ -77,14 +77,66 @@ export async function deleteMusic(music_id) {
     await connection.query("DELETE FROM music WHERE music_id = ?", [music_id]);
 }
 
+export async function updateMusic(music_id, music_name, artist_name, origin, music_type) {
+    await connection.query("UPDATE music SET music_name = ?, artist_name = ?, origin = ?, music_type = ? WHERE music_id = ?", [music_name, artist_name, origin, music_type, music_id]);
+}
+
 //Playlist
+
+
+// Check if a song is already in a playlist
+export async function isSongInPlaylist(music_id, user_id, playlistName) {
+    try {
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id
+        const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+        const [rows] = await connection.query(`SELECT * FROM ${tableName} WHERE music_id = ?`, [music_id]);
+        return rows.length > 0;
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+// Check if a song is already in a playlist
+export async function isSongInPlaylistID(music_id, user_id, playlist_id) {
+    try {
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+        const [rows] = await connection.query(`SELECT * FROM ${tableName} WHERE music_id = ?`, [music_id]);
+        return rows.length > 0;
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
 
 // Add a music to the playlist of a given user. If the user doesn't have a playlist, create one.
 export async function addMusicToPlaylist(music_id, user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
-        await connection.query(`INSERT INTO ? (music_id) VALUES (?)`, [tableName,music_id]); // Add the music to the playlist
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id object
+        const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
+        const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        const isSongPlaylist = await isSongInPlaylist(music_id, user_id, playlistName); // Check if the song is already in the playlist
+        if (!isSongPlaylist) {
+        await connection.query(`INSERT INTO ${tableName} (music_id) VALUES (?)`, [music_id]); // Add the music to the playlist
         console.log('The music has been added to the playlist successfully.');
+        }
+        else {
+            console.log('The music is already in the playlist.');
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
+    try {
+        const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        const isSongPlaylist = await isSongInPlaylistID(music_id, user_id, playlist_id); // Check if the song is already in the playlist
+        if (!isSongPlaylist) {
+        await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id,1]); // Add the music to the playlist
+        console.log('The music has been added to the playlist successfully.');
+        }
+        else {
+            console.log('The music is already in the playlist.');
+        }
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -93,7 +145,7 @@ export async function addMusicToPlaylist(music_id, user_id, playlistName) {
 // Get the id of a playlist, given the user_id and the playlist name
 export async function getPlaylistId(user_id, playlistName) {
     try {
-        return await connection.query(`SELECT playlist_id FROM playlist_list WHERE user_id = ? AND playlist_name = ?`, [user_id, connection.escape(playlistName)]);  
+        return await connection.query(`SELECT playlist_id FROM playlist_list WHERE user_id = ? AND playlist_name = ?`, [user_id, playlistName]);  
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -101,7 +153,19 @@ export async function getPlaylistId(user_id, playlistName) {
 // Remove a music from the playlist of a given user
 export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
+        const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the playlist id
+        const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+
+        await connection.query(`DELETE FROM ${tableName} WHERE music_id = ?`, [music_id]); // Remove the music from the playlist
+        console.log('The music has been removed from the playlist successfully.');
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+export async function removeMusicFromPlaylistID(user_id, playlist_id, music_id) {
+    try {
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
         await connection.query(`DELETE FROM ${tableName} WHERE music_id = ?`, [music_id]); // Remove the music from the playlist
         console.log('The music has been removed from the playlist successfully.');
@@ -113,8 +177,7 @@ export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
 // Insert a playlist to the playlists table
 export async function insertPlaylistToList(user_id, playlistName) {
     try {
-        const escapedPlaylistName = connection.escape(playlistName); // 
-        await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, escapedPlaylistName]);
+        await connection.query(`INSERT INTO playlist_list (user_id, playlist_name) VALUES (?, ?)`, [user_id, playlistName]);
         console.log('The playlist has been added to the playlists table successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
@@ -173,24 +236,34 @@ export async function getAllPlaylists() {
 
 
 // Get the songs of a given playlist
-export async function getSongsFromPlaylist(user_id, playlistName) {
+export async function getSongsFromPlaylist(user_id, playlist_id) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
+        const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
-        const [rows] = await connection.query(`SELECT * FROM ?`, [tableName]);
+        const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
         return rows;
     } catch (error) {
         console.error('An error occurred:', error);
     }
 }
 
+
 // Check if a playlist already exists for a given user
 export async function playlistExists(user_id, playlistName) {
     try {
-        const tableName = await getTableName(user_id, playlistName); // Get the table name
-
         const [rows] = await connection.query("SELECT * FROM playlist_list WHERE user_id = ? AND playlist_name = ?", [user_id, playlistName]);
         return rows.length > 0;
+    }
+    catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+//Get the name of a playlist given the user_id and the playlist_id
+export async function getPlaylistName(user_id, playlist_id) {
+    try {
+        const [rows] = await connection.query("SELECT playlist_name FROM playlist_list WHERE user_id = ? AND playlist_id = ?", [user_id, playlist_id]);
+        return rows;
     }
     catch (error) {
         console.error('An error occurred:', error);
