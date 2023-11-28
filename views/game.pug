@@ -22,9 +22,23 @@ block content
       //- n'existe plus button#nextButton(onclick="nextButton()") Next
 
       //- Zone de texte
-      label.mx-auto Nom de l'anime :
+
+      // a faire : faire une page intermediaire qui permet de choisir les informations a afficher parmis (nom de la musique, nom de l'artiste, origine, type de musique)
+      label.mx-auto Nom de la musique :
       .mb-4
-      input#textInput(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
+      input#textInputMusic_name(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
+      .mb-4
+      label.mx-auto Nom de l'artiste :
+      .mb-4
+      input#textInputArtist(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
+      .mb-4
+      label.mx-auto Origine :
+      .mb-4
+      input#textInputOrigin(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
+      .mb-4
+      label.mx-auto Type de musique :
+      .mb-4
+      input#textInputMusic_Type(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
       .mb-4
 
       //- Bouton de validation de la réponse
@@ -32,9 +46,15 @@ block content
 
     #transition.hidden.container.mx-auto.p-10.border-2.border-black
       p.text-center.text-gray-900.text-bold.text-2xl Good answer was :
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answer
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicName
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerArtistName
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerOrigin
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicType
       p.text-center.text-gray-800.text-bold.text-2xl Were you correct ?
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correction
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionMusicName
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionArtistName
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionOrigin
+      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionMusicType
     #end.hidden.container.p-10
       p THE END !!!
   script var data = !{JSON.stringify(musics)}
