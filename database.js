@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { table } from 'console';
 import { get } from 'http';
+
 dotenv.config();
 
 // create a connection to the database
@@ -35,10 +36,26 @@ export async function getUserById(id) {
     return rows[0];
 }
 
+export async function checkUser(username, password) {
+    const [rows] = await connection.query("SELECT * FROM users WHERE username = ?", [username]);
+    if (rows.length === 0) {
+        return false;
+    }
+    if (bcrypt.compareSync(password, rows[0].password)) {
+        return rows[0];
+    }
+    return false;
+}
+
 export async function createUser(username, password) {
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(password, saltRounds);
-    await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
+    try{
+        const saltRounds = 10;
+        const hash = bcrypt.hashSync(password, saltRounds);
+        await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
+    } catch(error){
+         return false;
+    }
+    return true;
 }
 
 export async function getMusic() {
