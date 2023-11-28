@@ -48,9 +48,14 @@ export async function checkUser(username, password) {
 }
 
 export async function createUser(username, password) {
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(password, saltRounds);
-    await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
+    try{
+        const saltRounds = 10;
+        const hash = bcrypt.hashSync(password, saltRounds);
+        await connection.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash]);
+    } catch(error){
+         return false;
+    }
+    return true;
 }
 
 export async function getMusic() {
