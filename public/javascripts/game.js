@@ -2,30 +2,26 @@
 // import { videoPath } from './config.js';
 const videoPath = "../videos/";
 
-// Création d'une liste de vidéos
-const videoList = [
-    "0.mp4",
-    "1.mp4",
-    "2.mp4",
-]; // a changer grace au nouveau systeme
-
 // Création d'une liste de noms associés aux vidéos
-const nameList = [
+const naame = [
     "Souso no Frieren",
     "Usseewa",
     "One Piece",
 
 ]; // same 
 list = [];
-function makeList(musics){
-    console.log(musics)
+nameList = [];
+function dataToListMusic(musics,infoMusics){
     musics.forEach(music =>
     {
         list.push(music.music_id)
-    });
-    console.log(list)
+        console.log(list)
+        console.log(infoMusics)
+        const name = infoMusics.filter(music1 => music1.music_id === music.music_id);
+        if(name.length>0) console.log(name[0].music_name);
+        nameList.push(name[0].music_name);
+    });// a changer quand je serais plus reveillé : pas besoin des musics si on a infomusics ( a part peut etre pour avoir leur ordre)
 }
-
 
 delay = 2000;
 index = 0;
@@ -41,7 +37,7 @@ videoSection=null;
 
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
-    makeList(data);
+    dataToListMusic(data,infoMusics);
     videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
     startSection = document.getElementById("start");
     playSection = document.getElementById("play");

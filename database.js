@@ -45,6 +45,10 @@ export async function getMusic() {
     const [rows] = await connection.query("SELECT * FROM music");
     return rows;
 }
+export async function getInfoMusic(music_id) {
+    const [rows] = await connection.query("SELECT * FROM music WHERE music_id = ?", [music_id]);
+    return rows;
+}
 
 export async function addMusic(music_name, artist_name, origin, music_type) {
     await connection.query("INSERT INTO music (music_name, artist_name, origin, music_type) VALUES (?, ?, ?, ?)", [music_name, artist_name, origin, music_type]);
