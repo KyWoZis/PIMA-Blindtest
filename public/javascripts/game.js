@@ -16,8 +16,18 @@ const nameList = [
     "One Piece",
 
 ]; // same 
+list = [];
+function makeList(musics){
+    console.log(musics)
+    musics.forEach(music =>
+    {
+        list.push(music.music_id)
+    });
+    console.log(list)
+}
 
-delay = 20000;
+
+delay = 2000;
 index = 0;
 score = 0;
 
@@ -31,6 +41,7 @@ videoSection=null;
 
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
+    makeList(data);
     videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
     startSection = document.getElementById("start");
     playSection = document.getElementById("play");
@@ -46,7 +57,7 @@ function beginBT() {
 }
 
 function song(){
-    videoElement.src = videoPath + videoList[index]; // Définit la source de la vidéo
+    videoElement.src = videoPath + list[index]+".mp4"; // Définit la source de la vidéo
     videoElement.play(); // Démarre la vidéo
 
     // Réinitialiser la zone de texte
@@ -64,7 +75,7 @@ function transition(){
     hideDiv.style.display  = "none";
     playSection.style.display = "none";
     transitionSection.style.display = "block";
-    videoElement.src = videoPath + videoList[index]; // Définit la source de la vidéo
+    videoElement.src = videoPath + list[index]+".mp4"; // Définit la source de la vidéo
     videoElement.play(); // Démarre la vidéo
     
     // good answer 
@@ -79,7 +90,7 @@ function transition(){
     index = index + 1;
     //next song
     setTimeout(() => {
-        if(index >= videoList.length - 1)
+        if(index >= list.length )
             endBT()
         else{
             hideDiv.style.display  = "block";

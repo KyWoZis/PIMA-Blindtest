@@ -7,7 +7,7 @@ block content
 
     div#start.container.mx-auto
       //- Bouton de lecture de la première musique
-      button#playButton(onclick="beginBT()").text-4xl.text-bold.text-white.container.pb-10.pt-10.items-center.bg-red-500.p-2.rounded-lg.mx-auto(class="hover:bg-red-400").
+      button#playButton(onclick="beginBT()", class="hover:bg-red-400").text-4xl.text-bold.text-white.container.pb-10.pt-10.items-center.bg-red-500.p-2.rounded-lg.mx-auto.
         Play
 
     div.relative.hidden.max-w-10xl.mx-auto.p-0.mt-80#video
@@ -37,3 +37,4 @@ block content
       p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correction
     #end.hidden.container.p-10
       p THE END !!!
+  script var data = !{JSON.stringify(musics)}
