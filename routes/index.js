@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   if (req.cookies.jwt_token) {
     var user = jsonwebtoken.verify(req.cookies.jwt_token, JWT_SECRET);
   }
-  res.render('index', { title: 'my super website!!!!!', username : user ? user.username : null });
+  res.render('index', { title: 'BlindTest Project'});
   return;
 });
 
