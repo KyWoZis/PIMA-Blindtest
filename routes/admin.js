@@ -13,6 +13,7 @@ var router = express.Router();
 router.get('/', async function (req, res, next) {
   if (req.cookies.jwt_token) {
     var user = jsonwebtoken.verify(req.cookies.jwt_token, JWT_SECRET);
+    console.log(user);
      if(await checkAdmin(user.username)) {
        res.render('admin', {title: 'my super website!!!!!', username: user ? user.username : null, is_ad: true});
      }
@@ -21,7 +22,9 @@ router.get('/', async function (req, res, next) {
      }
       return;
   }
-  res.render('admin', {title: 'my super website!!!!!', username: user ? user.username : null, is_ad: is_ad});
+  else {
+    res.redirect('/login');
+  }
   return;
 });
 
