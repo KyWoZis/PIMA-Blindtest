@@ -1,88 +1,118 @@
 extends layout
 block head
   title Playlist Database
+  script(src="/javascripts/updatePlaylistTable.js")
 block content
-  table
-    thead
-      tr
-        each column, index in data[0]
-          th= index
-        th Actions
-        // Generate headers for all columns and add an "Actions" header
+  body(onload="updateTable('', db, 1);")
+    .div.tableContainer
+      table
+        thead
+          tr
+            th(colspan=1)
+              button#prevPage(onclick='changePage(-1)') &lt; Prev
+              select#pageNumber(onchange='changePage()', value='1')
+              button#nextPage(onclick='changePage(1)') Next &gt;
 
-    tbody
-      each row in data
-        tr
-          each column in row
-            td= column
-          td
-              form(action='delete', method='get')
-                  input(type='hidden', name='user_id', value=row.user_id)
-                  input(type='hidden', name='playlist_id', value=row.playlist_id)
-                  button#deleteButton(type='submit') Delete
-                  //- Add an "Delete" button for each row
-                  //- button#editButton(type='button') Edit playlist
+              p(id='selectedPage') Selected Page: 1
+            th(colspan=2)
+              input(type='text', name='search', id='search')
+            th
+              button#addButton(type='button') Add
+          tr
+            each column, index in data[0]
+              th= index
+            th Actions
 
-              form(action='editPlaylist', method='get')
-                  input(type='hidden', name='user_id', value=row.user_id)
-                  input(type='hidden', name='playlist_id', value=row.playlist_id)
-                  button#editButton(type='submit') Edit
-                  //- Add an "Edit" button for each row
+        tbody#tableBody
 
+    .overlay#addFormContainer
+      #addForm
+        h2 Add Data
+        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
+          // Input fields for adding data
+          label(for='user_id') User ID
+          input(type='text', name='user_id', id='user_id', required)
+          label(for='playlistName') Playlist Name
+          input(type='text', name='playlistName', id='playlistName', required)
+          br
+          button(type='submit') Upload
+        button#closeButton(type='button') Close
 
-      tr
-      each column in data[0]
-        td
-      td
-        button#addButton(type='button') Add
-  // Add an "Add" button row
-
-  .overlay#addFormContainer
-    #addForm
-      h2 Add Data
-      form#addDataForm(action='add', method='post', enctype='multipart/form-data')
-        // Input fields for adding data
-        label(for='user_id') User ID
-        input(type='text', name='user_id', id='user_id', required)
-        label(for='playlistName') Playlist Name
-        input(type='text', name='playlistName', id='playlistName', required)
-        br
-        button(type='submit') Upload
-      button#closeButton(type='button') Close
-
-  //- .overlay#editFormContainer
-  //-   #editForm
-  //-     h2 Edit Data
-  //-     form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
-  //-       // Input fields for editing data
-  //-       label(for='user_id') User ID
-  //-       input(type='text', name='user_id', id='user_id', required)
-  //-     button#closeEditButton(type='button') Close
+    //- .overlay#editFormContainer
+    //-   #editForm
+    //-     h2 Edit Data
+    //-     form#editDataForm(action='edit', method='post', enctype='multipart/form-data')
+    //-       // Input fields for editing data
+    //-       label(for='user_id') User ID
+    //-       input(type='text', name='user_id', id='user_id', required)
+    //-     button#closeEditButton(type='button') Close
 
 
-  script.
-    document.addEventListener('DOMContentLoaded', function () {
-      const addButton = document.getElementById('addButton');
-      const addFormContainer = document.getElementById('addFormContainer');
-      //- const closeFormButton = document.getElementById('closeButton');
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const addButton = document.getElementById('addButton');
+        const addFormContainer = document.getElementById('addFormContainer');
+        const closeFormButton = document.getElementById('closeButton');
 
-      addButton.addEventListener('click', function () {
-        addFormContainer.style.display = 'flex';
+        addButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'flex';
+        });
+
+        closeFormButton.addEventListener('click', function () {
+          addFormContainer.style.display = 'none';
+        });
+
+        const editButton = document.getElementById('editButton');
+        //- const editFormContainer = document.getElementById('editFormContainer');
+        //- const closeEditFormButton = document.getElementById('closeEditButton');
+
+        //- editButton.addEventListener('click', function () {
+        //-   editFormContainer.style.display = 'flex';
+        //- });
+
+      //-   closeEditFormButton.addEventListener('click', function () {
+      //-     editFormContainer.style.display = 'none';
+      //- });
       });
 
-      //- closeFormButton.addEventListener('click', function () {
-      //-   addFormContainer.style.display = 'none';
-      //- });
+      //load db with data from html
+      const db = !{JSON.stringify(data)};
 
-      const editButton = document.getElementById('editButton');
-      //- const editFormContainer = document.getElementById('editFormContainer');
-      //- const closeEditFormButton = document.getElementById('closeEditButton');
+      const searchInput = document.getElementById('search');
+      //add event listener to search button
+      var t1 = Date.now();
 
-      //- editButton.addEventListener('click', function () {
-      //-   editFormContainer.style.display = 'flex';
-      //- });
+      searchInput.addEventListener('input', function() {
+        var t2 = Date.now();
+        const searchValue = searchInput.value;
+        if (t2 - t1 > 500) {
+          updateTable(searchValue, db, 1);
+          t1 = t2;
+        }
+      });
 
-    //-   closeEditFormButton.addEventListener('click', function () {
-    //-     editFormContainer.style.display = 'none';
-    //- });
-    });
+      var currentPage = 1;
+
+      function changePage(offset = 0) {
+        var selectElement = document.getElementById('pageNumber');
+        var selectedPageElement = document.getElementById('selectedPage');
+        var prevPageButton = document.getElementById('prevPage');
+        var nextPageButton = document.getElementById('nextPage');
+
+        currentPage = parseInt(selectElement.value) + offset;
+
+        // Update selected page
+        selectElement.value = currentPage;
+        selectedPageElement.innerText = 'Selected Page: ' + currentPage;
+
+        // Enable/disable navigation buttons based on page number
+        prevPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = currentPage >= selectElement.options.length;
+
+        updateTable(searchInput.value, db, currentPage, false);
+      }
+
+      // Initialize page on load
+      document.addEventListener('DOMContentLoaded', function () {
+        changePage();
+      });
