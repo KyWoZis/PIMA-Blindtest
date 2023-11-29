@@ -3,12 +3,13 @@ block head
   title Admin page
 block content
   // if connected == true
-  .container.mx-auto.flex.justify-center.align-center.grid.grid-cols-4.gap-4
-    div.border-2.border-teal-500.p-5.pt-3.pb-3.rounded Music access :
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/database') music database
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/add') add music to database
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/delete') delete music to database
-    div.border-2.border-teal-500.p-5.pt-3.pb-3.rounded Playlist access:
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/database') playlist database
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/add') add playlist to database
-    a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/delete') delete playlist to database
+  div(style="margin-top: 100px")
+    .container.mx-auto.flex.justify-center.align-center.grid.grid-cols-4.gap-4
+      div.border-2.border-teal-500.p-5.pt-3.pb-3.rounded Music access :
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/database') music database
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/add') add music to database
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/music/delete') delete music to database
+      div.border-2.border-teal-500.p-5.pt-3.pb-3.rounded Playlist access:
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/database') playlist database
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/add') add playlist to database
+      a.border-2.border-teal-900.p-5.pt-2.pb-2.rounded-lg(style="font-size:1vw", class="hover:bg-teal-200")(href='/playlist/delete') delete playlist to database
