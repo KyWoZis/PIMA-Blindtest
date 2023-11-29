@@ -213,7 +213,7 @@ export async function createPlaylist(user_id, playlistName) {
         const [[getterplaylist_id]] = await getPlaylistId(user_id,playlistName) // Get the table name
         const playlist_id = getterplaylist_id.playlist_id;
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
-        await connection.query(`CREATE TABLE ${tableName} (music_id int NOT NULL, order_to_play int NOT NULL, FOREIGN KEY (music_id) REFERENCES music(music_id))`); // Create the playlist
+        await connection.query(`CREATE TABLE ${tableName} (music_id int NOT NULL, order_to_play int NOT NULL, FOREIGN KEY (music_id) REFERENCES music(music_id) ON DELETE CASCADE)`); // Create the playlist
         console.log('The playlist has been created successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
