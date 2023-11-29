@@ -1,5 +1,5 @@
 import express from 'express';
-import {getSongsFromPlaylist, getInfoMusic, checkAdmin} from "../database.js";
+import {getSongsFromPlaylist, getInfoMusic, checkAdmin, getAllPlaylists} from "../database.js";
 var router = express.Router();
 import dotenv from 'dotenv';
 dotenv.config();
@@ -27,6 +27,16 @@ router.get('/game', async function (req, res, next) {
   res.render('game', {musics: musics,infoMusics}); //we need to have all infos of the music before the game starts (name, artist, origin, type)
 
   return;
+});
+
+router.get('/selectPlaylist', async function (req, res, next) {
+  const allPlaylists = await getAllPlaylists();
+    if (allPlaylists.length === 0) {
+        res.render('createPlaylist');
+        return;
+    }
+    res.render('selectPlaylist', {data: allPlaylists});
+    return;
 });
 
 export default router;
