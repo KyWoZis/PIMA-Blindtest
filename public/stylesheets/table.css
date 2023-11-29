@@ -86,7 +86,7 @@ body {
   margin-bottom: 10px; /* Separation between labels */
 }
 
-#addForm input, #editForm input {
+#addForm input, #editForm input, #selectPlaylistForm input {
   width: 100%; /* Make the inputs fill the entire width of the form */
   padding: 10px;
   margin-bottom: 15px; /* Separation between input fields */
@@ -94,6 +94,7 @@ body {
   border-radius: 5px;
   box-sizing: border-box;
 }
+
 
 #addForm button[type="submit"], #editForm button[type="submit"] {
   background-color: #007bff;
