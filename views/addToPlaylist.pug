@@ -1,0 +1,132 @@
+extends layout
+block head
+  title Music Database
+  script(src="/javascripts/updateUserMusicTable.js")
+block content
+  body(onload="updateTable('', db, 1);")
+    .div.tableContainer
+      table
+        thead
+          tr
+            th(colspan=2)
+              button#prevPage(onclick='changePage(-1)') &lt; Prev
+              select#pageNumber(onchange='changePage()', value='1')
+              button#nextPage(onclick='changePage(1)') Next &gt;
+
+              p(id='selectedPage') Selected Page: 1
+            th(colspan=2)
+              input(type='text', name='search', id='search')
+            th
+                //button to update playlist
+                button#updateButton(type='button') Update
+            
+          tr
+            each column, index in data[0]
+                if index !== 'isIn' && index !== 'music_id'
+                    th= index
+            th Add to Playlist
+            // Generate headers for all columns and add an "Actions" header
+
+        tbody#tableBody
+    script.
+        //load db with data from html
+        const db = !{JSON.stringify(data)};
+        const playlist_id = !{JSON.stringify(playlist_id)};
+        const user_id = !{JSON.stringify(user_id)};
+
+        //change isIn in local data to true when box checked(generated dinamically so must use target with event listener)
+        document.addEventListener('click', function (event) {
+            if (event.target.type === 'checkbox') {
+                const id = event.target.id;
+                db[id].isIn = event.target.checked;
+            }
+        });
+
+        //const currentMusics contains the musics from db that are in the playlist when page is loaded
+        const musicsBeforeUpdate = db.filter(music => music.isIn);
+
+        //add event listener to update button
+        const updateButton = document.getElementById('updateButton');
+        updateButton.addEventListener('click', function () {
+            //get the musics that are in the updated playlist
+            const musicsInPlaylist = db.filter(music => music.isIn);
+            //get the musics that are not in the updated playlist
+            const musicsNotInPlaylist = db.filter(music => !music.isIn);
+            //get the musics that were not in the playlist when page was loaded but are now
+            const musicsAdded = musicsInPlaylist.filter(music => !musicsBeforeUpdate.includes(music));
+            //get the musics that were in the playlist when page was loaded but are not now
+            const musicsRemoved = musicsBeforeUpdate.filter(music => !musicsInPlaylist.includes(music));
+        
+            //updateing playlist
+            const formdata = new FormData();
+            if (musicsAdded.length === 1) {
+                formdata.append("musicsToAdd", [JSON.stringify(musicsAdded[0])]);
+            }
+            else {
+                for (let i = 0; i < musicsAdded.length; i++) {
+                    formdata.append("musicsToAdd", JSON.stringify(musicsAdded[i]));
+                }
+            }
+            if (musicsRemoved.length === 1) {
+                formdata.append("musicsToRemove", [JSON.stringify(musicsRemoved[0])]);
+            }
+            else {
+                for (let i = 0; i < musicsRemoved.length; i++) {
+                    formdata.append("musicsToRemove", JSON.stringify(musicsRemoved[i]));
+                }
+            }
+            formdata.append("playlist_id", playlist_id);
+            formdata.append("user_id", user_id);
+
+            const requestOptions = {
+                method: 'POST',
+                body: formdata,
+            };
+            //fetch then check response status
+            fetch("updatePlaylist", requestOptions).then(response => {
+                if (response.status === 200) {
+                    window.location.href = 'editPlaylist?playlist_id='+playlist_id+'&user_id='+user_id;
+                }
+            });
+                
+            
+        });
+
+        const searchInput = document.getElementById('search');
+        //add event listener to search button
+        var t1 = Date.now();
+
+        searchInput.addEventListener('input', function() {
+        var t2 = Date.now();
+        const searchValue = searchInput.value;
+        if (t2 - t1 > 500) {
+            updateTable(searchValue, db, 1);
+            t1 = t2;
+        }
+        });
+
+        var currentPage = 1;
+
+        function changePage(offset = 0) {
+        var selectElement = document.getElementById('pageNumber');
+        var selectedPageElement = document.getElementById('selectedPage');
+        var prevPageButton = document.getElementById('prevPage');
+        var nextPageButton = document.getElementById('nextPage');
+
+        currentPage = parseInt(selectElement.value) + offset;
+
+        // Update selected page
+        selectElement.value = currentPage;
+        selectedPageElement.innerText = 'Selected Page: ' + currentPage;
+
+        // Enable/disable navigation buttons based on page number
+        prevPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = currentPage >= selectElement.options.length;
+
+        updateTable(searchInput.value, db, currentPage, false);
+        }
+
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', function () {
+        changePage();
+        });

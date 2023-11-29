@@ -1,160 +1,75 @@
 extends layout
 block head
-  link(rel='stylesheet', href='/stylesheets/table.css')
+  script(src="/javascripts/updatePlaylistTable.js")
   title Music Database
 block content
-    table
-      thead
-        tr
-          each column, index in data[0]
-            th= index
-          th Actions
-          th Membre playlist
-          // Generate headers for all columns and add an "Actions" header
-
-      tbody
-        each row in data
+  body(onload="updateTable('', db, 1);")
+    .div.tableContainer
+      table
+        thead
           tr
-            each column in row
-              td= column
-            td
-                form(action='delete', method='get')
-                    input(type='hidden', name='id', value=row.music_id)
-                    button#deleteButton(type='submit') Delete
-                // Add a "Delete" button for each row
-            
-            td
-              //remove from playlist
-              a.text-xl.border.p-2.rounded.border-black.mr-5(class="hover:bg-gray-400", href=`removeMusicFromPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Remove from playlist
-              a.text-xl.border.p-2.rounded.border-black(class="hover:bg-gray-400", href=`addMusicToPlaylist?music_id=${row.music_id}&user_id=${user_id}&playlist_id=${playlist_id}`) Add to playlist
-              //input(type='checkbox', name='addToPlaylist', data-music-id=row.music_id)
-        
-        tr
-        each column in data[0]
-          td
-        td
-          button#addButton(type='button') Add
-    // Add an "Add" button row
+            th(colspan=1)
+              button#prevPage(onclick='changePage(-1)') &lt; Prev
+              select#pageNumber(onchange='changePage()', value='1')
+              button#nextPage(onclick='changePage(1)') Next &gt;
 
-    .overlay#addFormContainer
-      #addForm
-        h2 Add Data
-        form#addDataForm(action='add', method='post', enctype='multipart/form-data')
-          // Input fields for adding data
-          label(for='musicName') Music Name
-          input(type='text', name='music_name', id='musicName', required)
-          br
-          label(for='artistName') Artist Name
-          input(type='text', name='artist_name', id='artistName', required)
-          br
-          label(for='origin') Origin
-          input(type='text', name='origin', id='origin')
-          br
-          label(for='musicType') Music Type
-          input(type='text', name='music_type', id='musicType')
-          br
-          label(for='musicFile') Upload Music File (mp4)
-          input(type='file', name='music_file', id='musicFile', accept='.mp4', required)
-          br
-          button(type='submit') Upload
-        div
-          label(for='progress-bar')
-          progress#progress-bar(value='0', max='100')
-        button#closeButton(type='button') Close
+              p(id='selectedPage') Selected Page: 1
+            th(colspan=1)
+              input(type='text', name='search', id='search')
+            th
+              form#addToPlaylistForm(action='addToPlaylist', method='get')
+                input(type='hidden', name='user_id', value=user_id)
+                input(type='hidden', name='playlist_id', value=playlist_id)
+                button#addButton(type='submit') Add to Playlist
+          tr
+            each column, index in data[0]
+              th= index
+            th Actions
+
+        tbody#tableBody
+
     script.
-      document.addEventListener('DOMContentLoaded', function () {
-        const addButton = document.getElementById('addButton');
-        const addFormContainer = document.getElementById('addFormContainer');
-        const closeFormButton = document.getElementById('closeButton');
+      //load db with data from html
+      const db = !{JSON.stringify(data)};
+      const user_id = !{JSON.stringify(user_id)};
+      const playlist_id = !{JSON.stringify(playlist_id)};
 
-        addButton.addEventListener('click', function () {
-          addFormContainer.style.display = 'flex';
-        });
+      const searchInput = document.getElementById('search');
+      //add event listener to search button
+      var t1 = Date.now();
 
-        closeFormButton.addEventListener('click', function () {
-          addFormContainer.style.display = 'none';
-        });
-
-        const addToPlaylistCheckboxes = document.querySelectorAll('input[name="addToPlaylist"]');
-        addToPlaylistCheckboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', function () {
-            const musicId = this.getAttribute('data-music-id');
-            if (this.checked) {
-              window.location.replace(`/add-to-playlist?id=${musicId}&user_id=${user_id}&playlist_id=${playlist_id}`);
-              console.log();
-            } else {
-              // Remove the music_id from the list of selected music
-              const index = selectedMusic.indexOf(this.value);
-              if (index > -1) {
-
-              }
-            }
-          });
-        });
+      searchInput.addEventListener('input', function() {
+        var t2 = Date.now();
+        const searchValue = searchInput.value;
+        if (t2 - t1 > 500) {
+          updateTable(searchValue, db, 1);
+          t1 = t2;
+        }
       });
 
-      
-      const form = document.getElementById('addDataForm');
-      const bar = document.getElementById('progress-bar');
+      var currentPage = 1;
 
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData();
-        const file = document.getElementById('musicFile');
-        const img = file.files[0];
-        formData.append('music_file', img);
-        formData.append('music_name', document.getElementById('musicName').value);
-        formData.append('artist_name', document.getElementById('artistName').value);
-        formData.append('origin', document.getElementById('origin').value);
-        formData.append('music_type', document.getElementById('musicType').value);
-        
-        const xhr = new XMLHttpRequest();
+      function changePage(offset = 0) {
+        var selectElement = document.getElementById('pageNumber');
+        var selectedPageElement = document.getElementById('selectedPage');
+        var prevPageButton = document.getElementById('prevPage');
+        var nextPageButton = document.getElementById('nextPage');
 
-        xhr.open('POST', 'add', true);
+        currentPage = parseInt(selectElement.value) + offset;
 
-        document.getElementById('progress-bar').style.display = 'inline'
+        // Update selected page
+        selectElement.value = currentPage;
+        selectedPageElement.innerText = 'Selected Page: ' + currentPage;
 
-        xhr.upload.onprogress = function (e) {
-          if (e.lengthComputable) {
-            const percentCompleted = Math.round((e.loaded / e.total) * 100);
-            bar.setAttribute('value', percentCompleted);
-            bar.previousElementSibling.textContent = `${percentCompleted}%`;
-            if (percentCompleted === 100) {
-              bar.previousElementSibling.textContent = `Upload complete!`;
-            }
-          }
-        };
+        // Enable/disable navigation buttons based on page number
+        prevPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = currentPage >= selectElement.options.length;
 
-        xhr.onload = function () {
-          // Handle the completion of the upload
-          if (xhr.status >= 200 && xhr.status < 300) {
-            // Successful upload
-            console.log('Upload successful');
+        updateTable(searchInput.value, db, currentPage, false);
+      }
 
-            // Check if there's a redirectTo property in the response
-            try {
-              const responseData = JSON.parse(xhr.responseText);
-              if (responseData.redirectTo) {
-                // Redirect to the specified URL
-                window.location.href = responseData.redirectTo;
-              }
-            } catch (error) {
-              console.error('Error parsing server response:', error);
-            }
-          } else {
-            // Handle errors
-            console.error('Upload failed with status:', xhr.status);
-          }
-        };
+      // Initialize page on load
+      document.addEventListener('DOMContentLoaded', function () {
+        changePage();
+      });
 
-
-        xhr.onerror = function () {
-          // Handle network errors
-          console.error('Network error during upload');
-        };
-
-        xhr.send(formData);
-
-
-
-      })
