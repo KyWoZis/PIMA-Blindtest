@@ -43,6 +43,10 @@ transitionSection=null;
 endSection=null;
 videoSection=null;
 
+//score
+var score=0;
+var total=0;
+
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
     dataToListMusic(data,infoMusics);
@@ -58,6 +62,7 @@ function beginBT() {
     Artist_name = document.getElementById("textInputArtist");
     Origin = document.getElementById("textInputOrigin");
     Music_type = document.getElementById("textInputMusic_Type");
+    Score = document.getElementById("score");
 
     startSection.style.display = "none"; // Cache la section start
     videoSection.style.display = "block";
@@ -146,6 +151,10 @@ function updateLabels(inputElement, associatedValue, answerLabelId, correctionLa
     } else {
         answerLabel.innerHTML = associated;
         correctionLabel.innerHTML = associated === currentAnswer ? "Yup !!" : "Nope but well tried !";
+        if (associated === currentAnswer) {
+            score++;
+        }
+        total++;
         answerLabel.style.display = 'block';
         correctionLabel.style.display = 'block';
     }
@@ -155,6 +164,9 @@ function endBT() {
     videoSection.style.display = "none";
     transitionSection.style.display = "none";
     endSection.style.display = "block";
+    Score.innerHTML = "Your score is : " + score+"/"+total;
+    Score.style.display = "block";
+    
 
 }
 
