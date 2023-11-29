@@ -34,32 +34,48 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     // Create a cell for the "Delete" button
                     const deleteCell = document.createElement('td');
                     const deleteForm = document.createElement('form');
-                    deleteForm.action = 'removeMusicFromPlaylist';
+                    deleteForm.action = 'delete';
                     deleteForm.method = 'get';
+
+                    const editForm = document.createElement('form');
+                    editForm.action = 'editPlaylist';
+                    editForm.method = 'get';
 
                     const deleteInputUserId = document.createElement('input');
                     deleteInputUserId.type = 'hidden';
                     deleteInputUserId.name = 'user_id';
-                    deleteInputUserId.value = user_id;
-                    const deleteInputMusicId = document.createElement('input');
-                    deleteInputMusicId.type = 'hidden';
-                    deleteInputMusicId.name = 'music_id';
-                    deleteInputMusicId.value = result.music_id;
+                    deleteInputUserId.value = result.user_id;
                     const deleteInputPlaylistId = document.createElement('input');
                     deleteInputPlaylistId.type = 'hidden';
                     deleteInputPlaylistId.name = 'playlist_id';
-                    deleteInputPlaylistId.value = playlist_id;
-                    
+                    deleteInputPlaylistId.value = result.playlist_id;
                     const deleteButton = document.createElement('button');
                     deleteButton.type = 'submit';
                     deleteButton.textContent = 'Delete';
                     deleteButton.id = 'deleteButton';
 
+                    const editInputUserId = document.createElement('input');
+                    editInputUserId.type = 'hidden';
+                    editInputUserId.name = 'user_id';
+                    editInputUserId.value = result.user_id;
+                    const editInputPlaylistId = document.createElement('input');
+                    editInputPlaylistId.type = 'hidden';
+                    editInputPlaylistId.name = 'playlist_id';
+                    editInputPlaylistId.value = result.playlist_id;
+                    const editButton = document.createElement('button');
+                    editButton.type = 'submit';
+                    editButton.textContent = 'Edit';
+                    editButton.id = 'editButton';
+
                     deleteForm.appendChild(deleteInputUserId);
-                    deleteForm.appendChild(deleteInputMusicId);
                     deleteForm.appendChild(deleteInputPlaylistId);
                     deleteForm.appendChild(deleteButton);
                     deleteCell.appendChild(deleteForm);
+
+                    editForm.appendChild(editInputUserId);
+                    editForm.appendChild(editInputPlaylistId);
+                    editForm.appendChild(editButton);
+                    deleteCell.appendChild(editForm);
 
                     row.appendChild(deleteCell);
                     // Add the row to the table body

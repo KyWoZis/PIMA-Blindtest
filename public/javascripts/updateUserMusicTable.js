@@ -3,7 +3,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
 
     //Get data from db json where a a value contains param
     const data = db.filter(item => {
-            return Object.keys(item).some(key => {
+        return Object.keys(item).some(key => {
             return item[key].toString().toLowerCase().includes(param.toLowerCase());
         });
     });
@@ -27,41 +27,23 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     const row = document.createElement('tr');
                     // Create table cells for each data field
                     Object.keys(result).forEach(key => {
-                        const cell = document.createElement('td');
-                        cell.textContent = result[key];
-                        row.appendChild(cell);
+                        if  (key != 'music_id') {
+                            const cell = document.createElement('td');
+                            if (key == 'isIn') {
+                                const checkBox = document.createElement('input');
+                                checkBox.type = 'checkbox';
+                                checkBox.name = 'selectMusic';
+                                checkBox.value = 'selectMusic';
+                                checkBox.id = i-1;
+                                checkBox.checked = result[key];
+                                cell.appendChild(checkBox);
+                            }
+                            else {
+                                cell.textContent = result[key];
+                            }
+                            row.appendChild(cell);
+                        }
                     });
-                    // Create a cell for the "Delete" button
-                    const deleteCell = document.createElement('td');
-                    const deleteForm = document.createElement('form');
-                    deleteForm.action = 'removeMusicFromPlaylist';
-                    deleteForm.method = 'get';
-
-                    const deleteInputUserId = document.createElement('input');
-                    deleteInputUserId.type = 'hidden';
-                    deleteInputUserId.name = 'user_id';
-                    deleteInputUserId.value = user_id;
-                    const deleteInputMusicId = document.createElement('input');
-                    deleteInputMusicId.type = 'hidden';
-                    deleteInputMusicId.name = 'music_id';
-                    deleteInputMusicId.value = result.music_id;
-                    const deleteInputPlaylistId = document.createElement('input');
-                    deleteInputPlaylistId.type = 'hidden';
-                    deleteInputPlaylistId.name = 'playlist_id';
-                    deleteInputPlaylistId.value = playlist_id;
-                    
-                    const deleteButton = document.createElement('button');
-                    deleteButton.type = 'submit';
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.id = 'deleteButton';
-
-                    deleteForm.appendChild(deleteInputUserId);
-                    deleteForm.appendChild(deleteInputMusicId);
-                    deleteForm.appendChild(deleteInputPlaylistId);
-                    deleteForm.appendChild(deleteButton);
-                    deleteCell.appendChild(deleteForm);
-
-                    row.appendChild(deleteCell);
                     // Add the row to the table body
                     tableBody.appendChild(row);
                     if (i == page*100) {
