@@ -1,3 +1,11 @@
+function getOptions(option){
+    const options1 = document.getElementById('music_name');
+    const options2 = document.getElementById('artist');
+    const options3 = document.getElementById('music_type');
+    const options4 = document.getElementById('origin');
+    option.value = option1.value * 8 + option2.value * 4 + option3.value * 2 + option4.value;
+}
+
 function updateTable(param, db, page, updatePageNumber = true) {
     const tableBody = document.getElementById('tableBody');
 
@@ -27,6 +35,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     const row = document.createElement('tr');
                     // Create table cells for each data field
                     Object.keys(result).forEach(key => {
+                        if(key === 'user_id' || key === 'playlist_id') return;
                         const cell = document.createElement('td');
                         cell.textContent = result[key];
                         row.appendChild(cell);
@@ -35,7 +44,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     // Create a cell for the "Launch" button
                     const launchCell = document.createElement('td');
                     const launchForm = document.createElement('form');
-                    launchForm.action = 'game';
+                    launchForm.action = '';
                     launchForm.method = 'get';
 
                     const launchInputUserId = document.createElement('input');
@@ -46,13 +55,21 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     launchInputPlaylistId.type = 'hidden';
                     launchInputPlaylistId.name = 'playlist_id';
                     launchInputPlaylistId.value = result.playlist_id;
+                    const launchOption = document.createElement('input');
+                    launchOption.type = 'hidden';
+                    launchOption.name = 'options';
+                    launchOption.value = 10;
                     const launchButton = document.createElement('button');
+                    //launchButton.onclick = function() { change options value but doesn't work
+                    //    getOptions(launchOption);
+                    //}
                     launchButton.type = 'submit';
                     launchButton.textContent = 'Launch';
                     launchButton.id = 'launchButton';
 
                     launchForm.appendChild(launchInputUserId);
                     launchForm.appendChild(launchInputPlaylistId);
+                    //launchForm.appendChild(launchOption);
                     launchForm.appendChild(launchButton);
                     launchCell.appendChild(launchForm);
 
