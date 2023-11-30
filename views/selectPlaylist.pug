@@ -39,7 +39,7 @@ block content
       searchInput.addEventListener('input', function() {
         var t2 = Date.now();
         const searchValue = searchInput.value;
-        if (t2 - t1 > 500) {
+        if (t2 - t1 > 80) {
           updateTable(searchValue, db, 1);
           t1 = t2;
         }

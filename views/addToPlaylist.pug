@@ -22,7 +22,7 @@ block content
             
           tr
             each column, index in data[0]
-                if index !== 'isIn' && index !== 'music_id'
+                if index !== 'isIn' && index !== 'music_id' && index !== 'index'
                     th= index
             th Add to Playlist
             // Generate headers for all columns and add an "Actions" header
@@ -99,7 +99,7 @@ block content
         searchInput.addEventListener('input', function() {
         var t2 = Date.now();
         const searchValue = searchInput.value;
-        if (t2 - t1 > 500) {
+        if (t2 - t1 > 80) {
             updateTable(searchValue, db, 1);
             t1 = t2;
         }

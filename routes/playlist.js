@@ -69,7 +69,11 @@ router.get('/editPlaylist', async (req, res) => {
 
     if (songs.length === 0) {
         var music = await getUserMusic();
-        music = music.map(json => ({ ...json, isIn: false }));
+        //music with isIn = false and index = index in the array
+        music.forEach((element, index) => {
+            element.isIn = false;
+            element.index = index;
+        });
         res.render('addToPlaylist', {data: music, playlist_id : playlist_id, user_id : user_id});
         return;
     }
@@ -92,6 +96,7 @@ router.get('/addToPlaylist', async (req, res) => {
     //music with isIn = true if the music is already in the playlist
     for (var i = 0; i < music.length; i++) {
         music[i].isIn = false;
+        music[i].index = i;
         for (var j = 0; j < songs.length; j++) {
             if (music[i].music_id === songs[j].music_id) {
                 music[i].isIn = true;

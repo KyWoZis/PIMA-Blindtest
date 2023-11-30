@@ -27,14 +27,14 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     const row = document.createElement('tr');
                     // Create table cells for each data field
                     Object.keys(result).forEach(key => {
-                        if  (key != 'music_id') {
+                        if  (key != 'music_id' && key != 'index') {
                             const cell = document.createElement('td');
                             if (key == 'isIn') {
                                 const checkBox = document.createElement('input');
                                 checkBox.type = 'checkbox';
                                 checkBox.name = 'selectMusic';
                                 checkBox.value = 'selectMusic';
-                                checkBox.id = i-1;
+                                checkBox.id = result['index'];
                                 checkBox.checked = result[key];
                                 cell.appendChild(checkBox);
                             }
