@@ -4,6 +4,17 @@ block head
   script(src="/javascripts/launchGameFromPlaylist.js")
 block content
   body(onload="updateTable('', db, 1);")
+    //div.flex.flex-col.justify-center.align-center.w-full.p-50
+    //  div Choississez une playlist et les paramètres de jeu :
+    //  .grid.grid-cols-4
+    //    label nom de la musique
+    //    label nom de l'artiste
+    //    label origine
+    //    label type de musique
+    //    input(type="checkbox")#music_name
+    //    input(type="checkbox")#artist
+    //    input(type="checkbox")#music_type
+    //    input(type="checkbox")#origin
     .div.tableContainer
       table
         thead
@@ -18,7 +29,8 @@ block content
               input(type='text', name='search', id='search')
           tr
             each column, index in data[0]
-              th= index
+              if(index !== 'playlist_id' && index !== 'user_id')
+                th= index
             th Actions
 
         tbody#tableBody
