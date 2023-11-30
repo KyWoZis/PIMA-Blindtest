@@ -44,7 +44,7 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     // Create a cell for the "Launch" button
                     const launchCell = document.createElement('td');
                     const launchForm = document.createElement('form');
-                    launchForm.action = '';
+                    launchForm.action = 'game';
                     launchForm.method = 'get';
 
                     const launchInputUserId = document.createElement('input');
