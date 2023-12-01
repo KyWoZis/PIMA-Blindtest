@@ -30,3 +30,29 @@ export async function getCurrentUser(req) {
     }
     return user;
 }
+
+export async function renderPageIfUserConnected(req, res, page) {
+    var user = await getCurrentUser(req);
+    if (user) {
+        res.render(page, {username: user.username});
+    }
+    else {
+        res.redirect('/login');
+    }
+}
+
+export async function renderPageIfUserAdmin(req, res, page) {
+    var user = await getCurrentUser(req);
+    if (user) {
+        var is_ad = await checkAdmin(user.username);
+        if (is_ad) {
+            res.render(page, {username: user.username, is_ad: true});
+        }
+        else {
+            res.redirect('/');
+        }
+    }
+    else {
+        res.redirect('/login');
+    }
+}
