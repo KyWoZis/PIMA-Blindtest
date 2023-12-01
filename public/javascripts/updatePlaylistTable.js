@@ -27,9 +27,11 @@ function updateTable(param, db, page, updatePageNumber = true) {
                     const row = document.createElement('tr');
                     // Create table cells for each data field
                     Object.keys(result).forEach(key => {
-                        const cell = document.createElement('td');
-                        cell.textContent = result[key];
-                        row.appendChild(cell);
+                        if (key != 'music_id') {
+                            const cell = document.createElement('td');
+                            cell.textContent = result[key];
+                            row.appendChild(cell);
+                        }
                     });
                     // Create a cell for the "Delete" button
                     const deleteCell = document.createElement('td');

@@ -262,7 +262,7 @@ export async function getSongsFromPlaylist(user_id, playlist_id) {
     try {
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
-        const [rows] = await connection.query(`SELECT * FROM ${tableName}`);
+        const [rows] = await connection.query(`SELECT music_name, p.music_id, order_to_play FROM ${tableName} p join music m on m.music_id=p.music_id`);
         return rows;
     } catch (error) {
         console.error('An error occurred:', error);

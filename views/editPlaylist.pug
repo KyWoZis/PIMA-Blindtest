@@ -23,7 +23,8 @@ block content
                 button#addButton(type='submit') Add to Playlist
           tr
             each column, index in data[0]
-              th= index
+              if index !== 'music_id'
+                th= index
             th Actions
 
         tbody#tableBody
