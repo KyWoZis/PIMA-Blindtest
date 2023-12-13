@@ -163,10 +163,8 @@ block content
             for (let i = 0; i < all_moved_row.length; i++) {
               formdata.append("music_ids", all_moved_row[i]);
               formdata.append("orders", all_order[i]);
-              //get index of value in db where value.music_id == all_moved_row[i]
-              var index = db.findIndex(x => x.music_id == all_moved_row[i]);
               //update the order_to_play of the moved rows in the db
-              db[index].order_to_play = all_order[i];
+              db[all_order[i]-1].order_to_play = all_order[i];
             }
 
             var requestOptions = {
