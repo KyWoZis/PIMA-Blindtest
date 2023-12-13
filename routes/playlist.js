@@ -12,7 +12,8 @@ import {
     addMusicToPlaylistID,
     removeMusicFromPlaylistID,
     getUserMusic,
-    getMusicId
+    getMusicId,
+    updateOrderToPlay
 } from '../database.js';
 import { create } from 'domain';
 import e from 'express';
@@ -179,6 +180,21 @@ router.get('/removeMusicFromPlaylistName', async (req, res) => {
     const music_id = await getMusicId(music_name, artist_name, origin, music_type);
     await removeMusicFromPlaylistID(user_id, playlist_id, music_id);
     res.redirect('./editPlaylist?playlist_id='+playlist_id+'&user_id='+user_id);
+    return;
+});
+
+//user makes a get request with user_id playlist_id a list of music_id and a list of corresponding orders to update with updateOrderToPlay (need to call orderToPlay for each music_id and order)
+router.post("/updateOrder", async (req, res) => {
+    const user_id = req.body.user_id;
+    const playlist_id = req.body.playlist_id;
+    const music_ids = req.body.music_ids;
+    const orders = req.body.orders;
+
+    console.log("user_id : "+user_id+" playlist_id : "+playlist_id+" music_ids : "+music_ids+" orders : "+orders);
+
+    for (var i = 0; i < music_ids.length; i++) {
+        await updateOrderToPlay(user_id, playlist_id, music_ids[i], orders[i]);
+    }
     return;
 });
 

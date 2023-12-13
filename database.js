@@ -153,12 +153,26 @@ export async function addMusicToPlaylistID(user_id, playlist_id, music_id) {
         const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
         const isSongPlaylist = await isSongInPlaylistID(music_id, user_id, playlist_id); // Check if the song is already in the playlist
         if (!isSongPlaylist) {
-        await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id,1]); // Add the music to the playlist
-        console.log('The music has been added to the playlist successfully.');
+            //get the last order_to_play
+            const [rows] = await connection.query(`SELECT order_to_play FROM ${tableName} ORDER BY order_to_play DESC LIMIT 1`);
+            //order to play is the last order_to_play + 1 and 1 if the playlist is empty
+            const order = rows.length > 0 ? rows[0].order_to_play+1 : 1;
+            await connection.query(`INSERT INTO ${tableName} (music_id,order_to_play) VALUES (?,?)`, [music_id, order]); // Add the music to the playlist
+            console.log('The music has been added to the playlist successfully.');
         }
         else {
             console.log('The music is already in the playlist.');
         }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+export async function updateOrderToPlay(user_id, playlist_id, music_id, order_to_play) {
+    try {
+        const tableName = `playlist_${user_id}_${playlist_id}`; // syntax of the table name
+        await connection.query(`UPDATE ${tableName} SET order_to_play = ? WHERE music_id = ?`, [order_to_play, music_id]); // Add the music to the playlist
+        console.log('The order to play has been updated successfully.');
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -179,6 +193,11 @@ export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
         const playlist_id = getterplaylist_id.playlist_id; //needed to get the playlist id
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
+        //update order of the other musics
+        const [rows] = await connection.query(`SELECT order_to_play FROM ${tableName} WHERE music_id = ?`, [music_id]);
+        const order = rows[0].order_to_play;
+        await connection.query(`UPDATE ${tableName} SET order_to_play = order_to_play-1 WHERE order_to_play > ?`, [order]);
+
         await connection.query(`DELETE FROM ${tableName} WHERE music_id = ?`, [music_id]); // Remove the music from the playlist
         console.log('The music has been removed from the playlist successfully.');
     } catch (error) {
@@ -188,6 +207,11 @@ export async function removeMusicFromPlaylist(music_id, user_id, playlistName) {
 export async function removeMusicFromPlaylistID(user_id, playlist_id, music_id) {
     try {
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
+
+        //update order of the other musics
+        const [rows] = await connection.query(`SELECT order_to_play FROM ${tableName} WHERE music_id = ?`, [music_id]);
+        const order = rows[0].order_to_play;
+        await connection.query(`UPDATE ${tableName} SET order_to_play = order_to_play-1 WHERE order_to_play > ?`, [order]);
 
         await connection.query(`DELETE FROM ${tableName} WHERE music_id = ?`, [music_id]); // Remove the music from the playlist
         console.log('The music has been removed from the playlist successfully.');
@@ -262,7 +286,7 @@ export async function getSongsFromPlaylist(user_id, playlist_id) {
     try {
         const tableName = `playlist_${user_id}_${playlist_id}`; // Get the table name
 
-        const [rows] = await connection.query(`SELECT music_name, p.music_id, order_to_play FROM ${tableName} p join music m on m.music_id=p.music_id`);
+        const [rows] = await connection.query(`SELECT music_name, p.music_id, order_to_play FROM ${tableName} p join music m on m.music_id=p.music_id order by order_to_play`);
         return rows;
     } catch (error) {
         console.error('An error occurred:', error);

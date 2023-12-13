@@ -35,6 +35,143 @@ block content
       const user_id = !{JSON.stringify(user_id)};
       const playlist_id = !{JSON.stringify(playlist_id)};
 
+      var music_name_id = {};
+      for (var i = 0; i < db.length; i++) {
+        music_name_id[db[i].music_name] = db[i].music_id;
+      }
+
+      var previous_selected_row;
+      var selected_row;
+      
+      //add event listener to get clicked row, using target(the row is generated dinamically)
+      document.addEventListener('click', function (event) {
+        //only if there is no text in search bar
+        if (searchInput.value === '') {
+          previous_selected_row = selected_row;
+          if (previous_selected_row) {
+            previous_selected_row.style.backgroundColor = previous_background;
+            update_order();
+          }
+          if (event.target.nodeName === 'TD') {
+            selected_row = event.target.parentNode;
+            if (previous_selected_row != selected_row) {
+              previous_background = selected_row.style.backgroundColor;
+            }
+            //if they are the same then unselect the row
+            else selected_row = null;
+          } else selected_row = null;
+
+          //change the background color of each cell in the row to the same color but a bit darker
+          if (selected_row) {
+            selected_row.style.backgroundColor = '#ddd';      
+          }
+        }
+      });
+
+      //list of music_id of rows moved down
+      var moved_rows_down = [];
+
+      //list of new order of the songs in the playlist
+      var new_order_down = [];
+
+      //list of music_id of rows moved up
+      var moved_rows_up = [];
+
+      //list of new order of the songs in the playlist
+      var new_order_up = [];
+
+      var all_moved_row = [];
+
+      var all_order = [];
+
+      var music_id;
+
+      document.addEventListener('keydown', function (event) {
+        if (selected_row) {
+          if (event.key === 'ArrowUp') {
+            if (selected_row.previousElementSibling) {
+              selected_row.parentNode.insertBefore(selected_row, selected_row.previousElementSibling);
+              //update the values of order_to_play of the moved rows in the table
+              selected_row.children[1].innerText = parseInt(selected_row.children[1].innerText) - 1;
+              selected_row.nextElementSibling.children[1].innerText = parseInt(selected_row.nextElementSibling.children[1].innerText) + 1;
+
+              music_id = music_name_id[selected_row.nextElementSibling.children[0].innerText];
+              //add the row that moved down (the row tha was above the selected row previously) to the list of rows moved down
+              moved_rows_down.push(music_id);
+              //add the new order of the song to the list of new order of the songs in the playlist
+              new_order_down.push(selected_row.nextElementSibling.children[1].innerText);
+              //remove the last element of the list of rows moved up
+              moved_rows_up.pop();
+              //remove the order of the song that was moved up from the list of new order of the songs in the playlist
+              new_order_up.pop();
+            }
+          } else if (event.key === 'ArrowDown') {
+            if (selected_row.nextElementSibling) {
+              selected_row.parentNode.insertBefore(selected_row.nextElementSibling, selected_row);
+              //update the values of order_to_play of the moved rows in the table
+              selected_row.children[1].innerText = parseInt(selected_row.children[1].innerText) + 1;
+              selected_row.previousElementSibling.children[1].innerText = parseInt(selected_row.previousElementSibling.children[1].innerText) - 1;
+              music_id = music_name_id[selected_row.previousElementSibling.children[0].innerText];
+              //add the row that moved up (the row tha was below the selected row previously) to the list of rows moved up
+              moved_rows_up.push(music_id);
+              //add the new order of the song to the list of new order of the songs in the playlist
+              new_order_up.push(selected_row.previousElementSibling.children[1].innerText);
+              //remove the last element of the list of rows moved down
+              moved_rows_down.pop();
+              //remove the order of the song that was moved down from the list of new order of the songs in the playlist
+              new_order_down.pop();
+            }
+          } else if (event.key === 'Enter') { //unselect the row
+            update_order();
+            selected_row.style.backgroundColor = previous_background;
+            selected_row = null;
+          }
+          //update the order of the songs in the playlist
+        }
+      });
+
+      function update_order() {
+        //if one of the lists is not empty
+        if (moved_rows_up.length > 0 || moved_rows_down.length > 0) {
+            //concatenate the list of rows moved up and down and the order
+            all_moved_row = moved_rows_up.concat(moved_rows_down);
+            all_order = new_order_up.concat(new_order_down);
+            //empty the lists
+            moved_rows_up = [];
+            moved_rows_down = [];
+            new_order_up = [];
+            new_order_down = [];
+
+            music_id = music_name_id[selected_row.children[0].innerText];
+
+            //add the selected row to the list of rows moved
+            all_moved_row.push(music_id);
+            //add the new order of the song to the list of new order of the songs in the playlist
+            all_order.push(selected_row.children[1].innerText);
+
+            //post request with formdata to send user_id, playlist_id, all_moved_row and all_order
+            var formdata = new FormData();
+            formdata.append("user_id", user_id);
+            formdata.append("playlist_id", playlist_id);
+            for (let i = 0; i < all_moved_row.length; i++) {
+              formdata.append("music_ids", all_moved_row[i]);
+              formdata.append("orders", all_order[i]);
+            }
+
+            var requestOptions = {
+                method: 'POST',
+                body: formdata,
+            };
+
+            //fetch then check response status
+            fetch("updateOrder", requestOptions);
+
+            //empty the lists
+            all_moved_row = [];
+            all_order = [];
+        }
+      }
+
       const searchInput = document.getElementById('search');
       //add event listener to search button
       var t1 = Date.now();
