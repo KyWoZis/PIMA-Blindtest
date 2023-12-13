@@ -1,15 +1,39 @@
 import express from 'express';
 import fs from 'fs';
-import {getMusic, addMusic, musicExists, deleteMusic, updateMusic} from '../database.js';
+import {getMusic, addMusic, musicExists, deleteMusic, updateMusic, checkAdmin} from '../database.js';
+import {getCurrentUser } from '../users.js';
 var router = express.Router();
 
 router.get('/database', async (req, res) => {
     const music = await getMusic();
-    if (music.length === 0) {
-        res.render('addMusic');
-        return;
+    var user = await getCurrentUser(req);
+    if (user) 
+    {
+        var is_ad = await checkAdmin(user.username);
+        if (is_ad) //If you are admin
+        {
+            // Admin action
+            if (music.length === 0) 
+            {
+                res.render('addMusic');
+                return;
+            }
+            else 
+            {
+                res.render('showMusic', {data: music});
+                return;
+            }
+        }
+        else // You are logged but not admin
+        {   
+            // User action
+            res.redirect('/');
+        }
     }
-    res.render('showMusic', {data: music});
+    else { // You are not logged
+        // Not logged action
+        res.redirect('/login'); 
+    }
     return;
 });
 

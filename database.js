@@ -55,6 +55,15 @@ export async function checkAdmin(username) {
     return rows[0].is_admin;
 }
 
+// Check if, for a given couple username/user_id, the user exists (used to check with cookies)
+export async function checkMatchUserAndId(username, user_id) {
+    const [rows] = await connection.query("SELECT * FROM users WHERE username = ? AND user_id = ?", [username, user_id]);
+    if (rows.length === 0) {
+        return false;
+    }
+    return true;
+}
+
 export async function createUser(username, password) {
     try{
         const saltRounds = 10;
