@@ -35,11 +35,6 @@ block content
       const user_id = !{JSON.stringify(user_id)};
       const playlist_id = !{JSON.stringify(playlist_id)};
 
-      var music_name_id = {};
-      for (var i = 0; i < db.length; i++) {
-        music_name_id[db[i].music_name] = db[i].music_id;
-      }
-
       var previous_selected_row;
       var selected_row;
       
@@ -86,16 +81,24 @@ block content
 
       var music_id;
 
+      var selected_row_music_id;
+
       document.addEventListener('keydown', function (event) {
         if (selected_row) {
+          selected_row_music_id = db[selected_row.children[1].innerText - 1].music_id;
           if (event.key === 'ArrowUp') {
             if (selected_row.previousElementSibling) {
               selected_row.parentNode.insertBefore(selected_row, selected_row.previousElementSibling);
               //update the values of order_to_play of the moved rows in the table
+
+              var tmp = db[selected_row.children[1].innerText - 1];
+              db[selected_row.children[1].innerText - 1] = db[selected_row.nextElementSibling.children[1].innerText - 1];
+              db[selected_row.nextElementSibling.children[1].innerText - 1] = tmp;
               selected_row.children[1].innerText = parseInt(selected_row.children[1].innerText) - 1;
               selected_row.nextElementSibling.children[1].innerText = parseInt(selected_row.nextElementSibling.children[1].innerText) + 1;
 
-              music_id = music_name_id[selected_row.nextElementSibling.children[0].innerText];
+              music_id = db[selected_row.nextElementSibling.children[1].innerText - 1].music_id;
+
               //add the row that moved down (the row tha was above the selected row previously) to the list of rows moved down
               moved_rows_down.push(music_id);
               //add the new order of the song to the list of new order of the songs in the playlist
@@ -109,9 +112,13 @@ block content
             if (selected_row.nextElementSibling) {
               selected_row.parentNode.insertBefore(selected_row.nextElementSibling, selected_row);
               //update the values of order_to_play of the moved rows in the table
+              var tmp = db[selected_row.children[1].innerText - 1];
+              db[selected_row.children[1].innerText - 1] = db[selected_row.previousElementSibling.children[1].innerText - 1];
+              db[selected_row.previousElementSibling.children[1].innerText - 1] = tmp;
               selected_row.children[1].innerText = parseInt(selected_row.children[1].innerText) + 1;
               selected_row.previousElementSibling.children[1].innerText = parseInt(selected_row.previousElementSibling.children[1].innerText) - 1;
-              music_id = music_name_id[selected_row.previousElementSibling.children[0].innerText];
+
+              music_id = db[selected_row.previousElementSibling.children[1].innerText - 1].music_id;
               //add the row that moved up (the row tha was below the selected row previously) to the list of rows moved up
               moved_rows_up.push(music_id);
               //add the new order of the song to the list of new order of the songs in the playlist
@@ -142,7 +149,7 @@ block content
             new_order_up = [];
             new_order_down = [];
 
-            music_id = music_name_id[selected_row.children[0].innerText];
+            music_id = selected_row_music_id;
 
             //add the selected row to the list of rows moved
             all_moved_row.push(music_id);
@@ -156,6 +163,10 @@ block content
             for (let i = 0; i < all_moved_row.length; i++) {
               formdata.append("music_ids", all_moved_row[i]);
               formdata.append("orders", all_order[i]);
+              //get index of value in db where value.music_id == all_moved_row[i]
+              var index = db.findIndex(x => x.music_id == all_moved_row[i]);
+              //update the order_to_play of the moved rows in the db
+              db[index].order_to_play = all_order[i];
             }
 
             var requestOptions = {
