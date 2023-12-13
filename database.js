@@ -99,6 +99,10 @@ export async function deleteMusic(music_id) {
     await connection.query("DELETE FROM music WHERE music_id = ?", [music_id]);
 }
 
+export async function deleteUser(username) {
+    await connection.query("DELETE FROM users WHERE username = ?", [username]);
+}
+
 export async function updateMusic(music_id, music_name, artist_name, origin, music_type) {
     await connection.query("UPDATE music SET music_name = ?, artist_name = ?, origin = ?, music_type = ? WHERE music_id = ?", [music_name, artist_name, origin, music_type, music_id]);
 }
