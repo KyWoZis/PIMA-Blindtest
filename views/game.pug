@@ -24,37 +24,43 @@ block content
       //- Zone de texte
 
       // a faire : faire une page intermediaire qui permet de choisir les informations a afficher parmis (nom de la musique, nom de l'artiste, origine, type de musique)
-      label.mx-auto Nom de la musique :
+      label.mx-auto Music name :
       .mb-4
       input#textInputMusic_name(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
       .mb-4
-      label.mx-auto Nom de l'artiste :
+      label.mx-auto Artist name:
       .mb-4
       input#textInputArtist(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
       .mb-4
-      label.mx-auto Origine :
+      label.mx-auto Origin :
       .mb-4
       input#textInputOrigin(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
       .mb-4
-      label.mx-auto Type de musique :
+      label.mx-auto Type of music
       .mb-4
       input#textInputMusic_Type(type="text",class="p-0.5").border.border-gray-300.w-full.bg-gray-50.p1.rounded-lg
       .mb-4
 
+
+
       //- Bouton de validation de la réponse
       button#submitButton(onclick="checkAnswer()", style="display: none") Submit
-
     #transition.hidden.container.mx-auto.p-10.border-2.border-black
-      p.text-center.text-gray-900.text-bold.text-2xl Good answer was :
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicName
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerArtistName
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerOrigin
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicType
-      p.text-center.text-gray-800.text-bold.text-2xl Were you correct ?
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionMusicName
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionArtistName
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionOrigin
-      p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#correctionMusicType
+      p.text-center.text-gray-900.text-bold.text-2xl Correction :
+      .grid-cols-2.grid
+        label.mx-auto.col-span-2 Music name :
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#yourMusicName
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicName
+        label.mx-auto.col-span-2 Artist name :
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#yourArtistName
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerArtistName
+        label.mx-auto.col-span-2 Origin :
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#yourOrigin
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerOrigin
+        label.mx-auto.col-span-2 Type of music :
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#yourMusicType
+        p.border.text-center.border-gray-300.w-full.bg-gray-50.p1.rounded-lg.text-xl#answerMusicType
+
     #end.hidden.container.p-10
       p THE END !!!
     #score.hidden.container.p-10

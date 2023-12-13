@@ -26,7 +26,7 @@ function dataToListMusic(musics,infoMusics){
     });// a changer quand je serais plus reveillé : pas besoin des musics si on a infomusics ( a part peut etre pour avoir leur ordre)
 }
 
-delay = 20000;
+delay = 5000;
 index = 0;
 score = 0;
 //elements de réponses
@@ -112,17 +112,18 @@ function transition(){
 
     const hideDiv = document.getElementById("hide");
     hideDiv.style.display  = "none";
-    playSection.style.display = "none";
+    //playSection.style.display = "none";
+    playSection.style = "grid 2";
     transitionSection.style.display = "block";
     videoElement.src = videoPath + list[index]+".mp4"; // Définit la source de la vidéo
     videoElement.play(); // Démarre la vidéo
 
 
     // Utilisation de la fonction pour chaque ensemble de valeurs
-    updateLabels(Music_name, nameList[index], "answerMusicName", "correctionMusicName");
-    updateLabels(Artist_name, ArtistList[index], "answerArtistName", "correctionArtistName");
-    updateLabels(Origin, OriginList[index], "answerOrigin", "correctionOrigin");
-    updateLabels(Music_type, MusicTypeList[index], "answerMusicType", "correctionMusicType");
+    updateLabels(Music_name, nameList[index], "yourMusicName", "answerMusicName");
+    updateLabels(Artist_name, ArtistList[index], "yourArtistName", "answerArtistName");
+    updateLabels(Origin, OriginList[index], "yourOrigin", "answerOrigin");
+    updateLabels(Music_type, MusicTypeList[index], "yourMusicType", "answerMusicType");
     index = index + 1;
     //next song
     setTimeout(() => {
@@ -145,19 +146,21 @@ function updateLabels(inputElement, associatedValue, answerLabelId, correctionLa
     const answerLabel = document.getElementById(answerLabelId);
     const correctionLabel = document.getElementById(correctionLabelId);
 
-    if (associatedValue === "") {
-        answerLabel.style.display = 'none';
-        correctionLabel.style.display = 'none';
+
+    answerLabel.innerHTML = currentAnswer;
+    correctionLabel.innerHTML = associatedValue ;
+    if(currentAnswer === "")
+        answerLabel.innerHTML = "No answer";
+    if (associated === currentAnswer) {
+        answerLabel.style.backgroundColor = 'green';
+        score++;
     } else {
-        answerLabel.innerHTML = associated;
-        correctionLabel.innerHTML = associated === currentAnswer ? "Yup !!" : "Nope but well tried !";
-        if (associated === currentAnswer) {
-            score++;
-        }
-        total++;
-        answerLabel.style.display = 'block';
-        correctionLabel.style.display = 'block';
+        answerLabel.style.backgroundColor = 'red';
     }
+    total++;
+    answerLabel.style.display = 'block';
+    correctionLabel.style.display = 'block';
+
 }
 
 function endBT() {
