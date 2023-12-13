@@ -1,0 +1,23 @@
+extends layout
+block head
+  title Profile page
+block content
+  .container.mx-auto.my-10.flex.flex-col.justify-center.align-center.w-full.p-50
+    h1.text-4xl.font-bold.mb-4.text-center.text-blue-600 Hello, #{username}!
+    p.text-xl.mb-2.text-center.text-gray-500 You are #{is_ad ? 'an admin' : 'not an admin'}.
+    .grid.grid-cols-4.gap-4
+      .card.border.border-gray-300.rounded-lg.p-4.shadow-lg
+        h2.text-2xl.font-bold.mb-2.text-center.text-green-500 Games Played
+        p.text-xl.text-center.text-gray-700 #{nombrePJ}
+      .card.border.border-gray-300.rounded-lg.p-4.shadow-lg
+        h2.text-2xl.font-bold.mb-2.text-center.text-green-500 Games Won
+        p.text-xl.text-center.text-gray-700 #{nombrePG}
+      .card.border.border-gray-300.rounded-lg.p-4.shadow-lg
+        h2.text-2xl.font-bold.mb-2.text-center.text-green-500 Games Lost
+        p.text-xl.text-center.text-gray-700 #{nombrePP}
+      .card.border.border-gray-300.rounded-lg.p-4.shadow-lg
+        h2.text-2xl.font-bold.mb-2.text-center.text-green-500 Average Score (in %)
+        p.text-xl.text-center.text-gray-700 #{AvgScore}%
+    form(method='POST', action='/users/delete')
+      input(type='hidden', name='username', value=username)
+      button.bg-red-500(style='hover:bg-red-700').text-white.font-bold.py-2.px-4.rounded.mt-2 Delete Account
