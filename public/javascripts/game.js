@@ -26,7 +26,7 @@ function dataToListMusic(musics,infoMusics){
     });// a changer quand je serais plus reveillé : pas besoin des musics si on a infomusics ( a part peut etre pour avoir leur ordre)
 }
 
-delay = 3000;
+delay = 15000;
 index = 0;
 score = 0;
 //elements de réponses
