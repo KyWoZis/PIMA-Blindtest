@@ -32,7 +32,7 @@ export async function getUsers() {
 }
 
 export async function getUserById(id) {
-    const [rows] = await connection.query("SELECT * FROM users WHERE id = ?", [id]);
+    const [rows] = await connection.query("SELECT * FROM users WHERE user_id = ?", [id]);
     return rows[0];
 }
 
@@ -316,6 +316,41 @@ export async function getPlaylistName(user_id, playlist_id) {
         return rows;
     }
     catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+export async function addGamePlayed(user_id) {
+    try {
+        await connection.query("UPDATE users SET nb_games = nb_games + 1 WHERE user_id = ?", [user_id]);
+        console.log('The number of games played has been updated successfully.');
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+export async function addWin(user_id) {
+    try {
+        await connection.query("UPDATE users SET nb_win = nb_win + 1 WHERE user_id = ?", [user_id]);
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+export async function updateAvgScore(user_id, score) {
+    try {
+        //get the number of games played
+        const [rows] = await connection.query("SELECT nb_games FROM users WHERE user_id = ?", [user_id]);
+        const nb_games = rows[0].nb_games;
+        //calculate the new average score
+        const [rows2] = await connection.query("SELECT avg_score FROM users WHERE user_id = ?", [user_id]);
+        const avg_score = rows2[0].avg_score;
+        //make score an integer
+        score = parseInt(score);
+        const new_avg_score = Math.floor((avg_score*(nb_games-1)+score)/nb_games);
+        //update the average score
+        await connection.query("UPDATE users SET avg_score = ? WHERE user_id = ?", [new_avg_score, user_id]);
+    } catch (error) {
         console.error('An error occurred:', error);
     }
 }

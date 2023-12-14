@@ -1,5 +1,5 @@
 import express from 'express';
-import {getSongsFromPlaylist, getInfoMusic, checkAdmin, getAllPlaylists} from "../database.js";
+import {getSongsFromPlaylist, getInfoMusic, checkAdmin, getAllPlaylists, getUserById} from "../database.js";
 var router = express.Router();
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,7 +11,10 @@ router.get('/', async function (req, res, next) {
     var user = jsonwebtoken.verify(req.cookies.jwt_token, JWT_SECRET);
     var is_ad = await checkAdmin(user.username);
   }
-  res.render('profile', {title: 'BlindTest Project', is_ad: is_ad, username: user ? user.username : null, nombrePJ: 10, nombrePG: 5, nombrePP: 2, AvgScore: 75});
+  //use getUserById to get user info
+  var user_data = await getUserById(user.user_id);
+
+  res.render('profile', {title: 'BlindTest Project', is_ad: is_ad, username: user ? user.username : null, nombrePJ: user_data.nb_games, nombrePG: user_data.nb_win, nombrePP: user_data.nb_loss, AvgScore: user_data.avg_score});
   return;
 });
 

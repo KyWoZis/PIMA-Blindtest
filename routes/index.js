@@ -24,7 +24,12 @@ router.get('/game', async function (req, res, next) {
   for (const music of musics) {
     infoMusics.push( (await getInfoMusic(music.music_id))[0]);
   }
-  res.render('game', {musics: musics,infoMusics}); //we need to have all infos of the music before the game starts (name, artist, origin, type)
+
+  if (req.cookies.jwt_token) {
+    var user = jsonwebtoken.verify(req.cookies.jwt_token, JWT_SECRET);
+  }
+
+  res.render('game', {musics: musics,infoMusics, id: user.user_id}); //we need to have all infos of the music before the game starts (name, artist, origin, type)
 
   return;
 });

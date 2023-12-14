@@ -26,7 +26,7 @@ function dataToListMusic(musics,infoMusics){
     });// a changer quand je serais plus reveillé : pas besoin des musics si on a infomusics ( a part peut etre pour avoir leur ordre)
 }
 
-delay = 5000;
+delay = 3000;
 index = 0;
 score = 0;
 //elements de réponses
@@ -50,6 +50,10 @@ var total=0;
 // Fonction qui démarre la première vidéo et cache l'élément vidéo
 function beginBT() {
     dataToListMusic(data,infoMusics);
+
+    //get request to /addGamePlayed to increment the number of games played by the user
+    fetch('/users/addGamePlayed?user_id=' + user_id);
+
     //recupere les sections
     videoElement = document.getElementById("video-player"); // Récupère l'élément vidéo
     startSection = document.getElementById("start");
@@ -170,7 +174,13 @@ function endBT() {
     Score.innerHTML = "Your score is : " + score+"/"+total;
     Score.style.display = "block";
     
+    //get request to /addWin to increment the number of wins of the user
+    fetch('/users/addWin?user_id=' + user_id);
 
+    //get request to /updateAvgScore to update the average score of the user
+    score = score*100/total;
+    console.log(score);
+    fetch('/users/updateAvgScore?user_id=' + user_id + '&score=' + Math.floor(score));
 }
 
 /*
